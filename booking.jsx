@@ -12,6 +12,7 @@ function Booking({ t }) {
   const [done, setDone] = useStateBk(false);
   const [loading, setLoading] = useStateBk(false);
   const [error, setError] = useStateBk(null);
+  const [lastSubmit, setLastSubmit] = useStateBk(0);
   const [ref] = useStateBk(() => "MG-" + Math.floor(Math.random() * 90000 + 10000));
 
   const total = 4;
@@ -25,7 +26,22 @@ function Booking({ t }) {
     return false;
   };
 
+  const sanitize = (str) => String(str).trim().slice(0, 500).replace(/[<>'"]/g, "");
+
+  const validateStep4 = () => {
+    const phoneClean = data.phone.replace(/\s/g, "");
+    if (!/^\+?[0-9]{9,15}$/.test(phoneClean)) return "Número de telefone inválido.";
+    if (data.email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(data.email)) return "Email inválido.";
+    if (data.name.length < 2) return "Nome demasiado curto.";
+    return null;
+  };
+
   const submit = async () => {
+    const validationError = validateStep4();
+    if (validationError) { setError(validationError); return; }
+    const now = Date.now();
+    if (now - lastSubmit < 30000) { setError("Aguarda 30 segundos antes de tentar novamente."); return; }
+    setLastSubmit(now);
     setLoading(true);
     setError(null);
     try {
@@ -34,17 +50,17 @@ function Booking({ t }) {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           ref,
-          service: data.service,
-          brand: data.brand,
-          model: data.model,
-          year: data.year,
-          plate: data.plate,
-          date: data.date,
-          time: data.time,
-          name: data.name,
-          phone: data.phone,
-          email: data.email,
-          notes: data.notes,
+          service: sanitize(data.service),
+          brand: sanitize(data.brand),
+          model: sanitize(data.model),
+          year: sanitize(data.year),
+          plate: sanitize(data.plate),
+          date: sanitize(data.date),
+          time: sanitize(data.time),
+          name: sanitize(data.name),
+          phone: sanitize(data.phone),
+          email: sanitize(data.email),
+          notes: sanitize(data.notes),
           submittedAt: new Date().toISOString(),
         }),
       });
