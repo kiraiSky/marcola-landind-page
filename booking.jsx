@@ -10,6 +10,8 @@ function Booking({ t }) {
     name: "", phone: "", email: "", notes: "",
   });
   const [done, setDone] = useStateBk(false);
+  const [loading, setLoading] = useStateBk(false);
+  const [error, setError] = useStateBk(null);
   const [ref] = useStateBk(() => "MG-" + Math.floor(Math.random() * 90000 + 10000));
 
   const total = 4;
@@ -23,8 +25,35 @@ function Booking({ t }) {
     return false;
   };
 
-  const submit = () => {
-    setDone(true);
+  const submit = async () => {
+    setLoading(true);
+    setError(null);
+    try {
+      await fetch("https://kiraiskyn8n.duckdns.org/webhook/marcola/formulario", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          ref,
+          service: data.service,
+          brand: data.brand,
+          model: data.model,
+          year: data.year,
+          plate: data.plate,
+          date: data.date,
+          time: data.time,
+          name: data.name,
+          phone: data.phone,
+          email: data.email,
+          notes: data.notes,
+          submittedAt: new Date().toISOString(),
+        }),
+      });
+      setDone(true);
+    } catch (err) {
+      setError("Erro ao enviar. Tenta novamente ou contacta-nos pelo WhatsApp.");
+    } finally {
+      setLoading(false);
+    }
   };
 
   const reset = () => {
@@ -208,11 +237,14 @@ function Booking({ t }) {
                       {t.booking.next} <IconArrowR />
                     </button>
                   ) : (
-                    <button className="btn btn-red" disabled={!canNext()} onClick={submit} style={{ opacity: canNext() ? 1 : .5 }}>
-                      {t.booking.finish} <IconArrowR />
+                    <button className="btn btn-red" disabled={!canNext() || loading} onClick={submit} style={{ opacity: canNext() && !loading ? 1 : .5 }}>
+                      {loading ? "A enviar…" : <>{t.booking.finish} <IconArrowR /></>}
                     </button>
                   )}
                 </div>
+                {error && (
+                  <p style={{ color: "var(--red)", fontSize: 13, marginTop: 12, textAlign: "center" }}>{error}</p>
+                )}
               </>
             )}
           </div>
