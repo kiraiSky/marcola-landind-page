@@ -7,20 +7,17 @@ function useReveal() {
   useEffect(() => {
     const el = ref.current;
     if (!el) return;
-    // fallback: if user has reduced motion or IO is slow, reveal after short delay
-    const fallback = setTimeout(() => el.classList.add("visible"), 600);
     const io = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting) {
           el.classList.add("visible");
-          clearTimeout(fallback);
           io.disconnect();
         }
       },
-      { threshold: 0.05, rootMargin: "0px 0px -40px 0px" }
+      { threshold: 0.06, rootMargin: "0px 0px -48px 0px" }
     );
     io.observe(el);
-    return () => { io.disconnect(); clearTimeout(fallback); };
+    return () => io.disconnect();
   }, []);
   return ref;
 }
@@ -78,7 +75,7 @@ function Nav({ t, lang, setLang, theme, setTheme }) {
 
   return (
     <>
-      <header className="topbar">
+      <header className={`topbar${open ? " topbar-drawer-open" : ""}`}>
         <div className="container-wide nav">
           <a href="#top" className="brand">
             <img src="assets/logo.png" alt="Marcola Garagem" />
@@ -293,7 +290,7 @@ function About({ t }) {
             <h2 className="section-title"><span className="outline">{t.about.title1}</span> <span>{t.about.title2}</span> <span className="chrome">{t.about.title3}</span></h2>
             <p className="section-sub">{t.about.p1}</p>
             <p style={{ color: "var(--text-2)", marginTop: 16, fontSize: 16, lineHeight: 1.55, maxWidth: 640 }}>{t.about.p2}</p>
-            <div className="about-list">
+            <Reveal stagger className="about-list">
               {t.about.items.map((it, i) => (
                 <div className="about-list-item" key={i}>
                   <span className="n">{it.n}</span>
@@ -303,7 +300,7 @@ function About({ t }) {
                   </div>
                 </div>
               ))}
-            </div>
+            </Reveal>
           </Reveal>
         </div>
       </div>
@@ -424,7 +421,7 @@ function Contact({ t }) {
           <span className="eyebrow">{t.contact.eyebrow}</span>
           <h2 className="section-title"><span className="outline">{t.contact.title1}</span> <span className="chrome">{t.contact.title2}</span></h2>
         </Reveal>
-        <Reveal className="contact-grid">
+        <Reveal stagger className="contact-grid">
           <div className="contact-info">
             <div className="contact-row">
               <span className="k">{t.contact.labels.address}</span>
@@ -492,7 +489,7 @@ function FAQ({ t }) {
           <span className="eyebrow">{t.faq.eyebrow}</span>
           <h2 className="section-title"><span>{t.faq.title1}</span> <span className="chrome">{t.faq.title2}</span></h2>
         </Reveal>
-        <Reveal className="faq">
+        <Reveal stagger className="faq">
           {t.faq.items.map((item, i) => (
             <div className={`faq-item ${open === i ? "open" : ""}`} key={i}>
               <div className="faq-q" onClick={() => setOpen(open === i ? -1 : i)}>
