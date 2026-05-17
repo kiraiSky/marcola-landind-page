@@ -90,7 +90,7 @@ function buildSteps(t) {
 }
 
 // ── Main ChatWidget ──────────────────────────────────────────────────
-function ChatWidget({ t }) {
+function ChatWidget({ t, lang }) {
   const [open, setOpen] = useChatState(false);
   const [step, setStep] = useChatState(0);
   const [data, setData] = useChatState({});
@@ -176,6 +176,7 @@ function ChatWidget({ t }) {
           ...formData,
           phone: formatPhone(formData.phone || ""),
           submittedAt: new Date().toISOString(),
+          lang: lang || "pt",
           source: "chatbot",
         }),
       });

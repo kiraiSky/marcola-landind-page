@@ -1,7 +1,7 @@
 // Multi-step booking form
 const { useState: useStateBk } = React;
 
-function Booking({ t }) {
+function Booking({ t, lang }) {
   const [step, setStep] = useStateBk(0);
   const [data, setData] = useStateBk({
     service: "",
@@ -70,6 +70,7 @@ function Booking({ t }) {
           phone: formatPhone(data.phone),
           email: sanitize(data.email),
           notes: sanitize(data.notes),
+          lang: lang || "pt",
           submittedAt: new Date().toISOString(),
         }),
       });

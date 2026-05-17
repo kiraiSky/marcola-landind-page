@@ -24,12 +24,12 @@ function App() {
         <About t={t} />
         <Gallery t={t} />
         <Reviews t={t} />
-        <Booking t={t} />
+        <Booking t={t} lang={lang} />
         <Contact t={t} />
         <FAQ t={t} />
       </main>
       <Footer t={t} />
-      <ChatWidget t={t} />
+      <ChatWidget t={t} lang={lang} />
     </>
   );
 }
