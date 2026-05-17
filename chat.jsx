@@ -8,6 +8,25 @@ const TIME_SLOTS = ["08:30", "09:30", "10:30", "11:30", "14:00", "15:30", "17:00
 
 function genRef() { return "MG-" + Math.floor(Math.random() * 90000 + 10000); }
 
+function formatPhone(raw) {
+  // Remove tudo exceto dígitos e +
+  let n = String(raw).replace(/[\s\-().]/g, "");
+
+  // Remove + inicial
+  if (n.startsWith("+")) n = n.slice(1);
+
+  // Remove 00 inicial (ex: 00351...)
+  if (n.startsWith("00")) n = n.slice(2);
+
+  // Número português sem código de país (9 dígitos a começar por 9)
+  if (/^9\d{8}$/.test(n)) n = "351" + n;
+
+  // Número português com 2 (telefone fixo, 9 dígitos a começar por 2)
+  if (/^2\d{8}$/.test(n)) n = "351" + n;
+
+  return n;
+}
+
 function sanitizeChat(str) { return String(str || "").trim().slice(0, 500).replace(/[<>'"]/g, ""); }
 
 // ── Chat bubble components ──────────────────────────────────────────
@@ -142,6 +161,7 @@ function ChatWidget() {
         body: JSON.stringify({
           ref,
           ...formData,
+          phone: formatPhone(formData.phone || ""),
           submittedAt: new Date().toISOString(),
           source: "chatbot",
         }),

@@ -28,6 +28,15 @@ function Booking({ t }) {
 
   const sanitize = (str) => String(str).trim().slice(0, 500).replace(/[<>'"]/g, "");
 
+  const formatPhone = (raw) => {
+    let n = String(raw).replace(/[\s\-().]/g, "");
+    if (n.startsWith("+")) n = n.slice(1);
+    if (n.startsWith("00")) n = n.slice(2);
+    if (/^9\d{8}$/.test(n)) n = "351" + n;
+    if (/^2\d{8}$/.test(n)) n = "351" + n;
+    return n;
+  };
+
   const validateStep4 = () => {
     const phoneClean = data.phone.replace(/\s/g, "");
     if (!/^\+?[0-9]{9,15}$/.test(phoneClean)) return "Número de telefone inválido.";
@@ -58,7 +67,7 @@ function Booking({ t }) {
           date: sanitize(data.date),
           time: sanitize(data.time),
           name: sanitize(data.name),
-          phone: sanitize(data.phone),
+          phone: formatPhone(data.phone),
           email: sanitize(data.email),
           notes: sanitize(data.notes),
           submittedAt: new Date().toISOString(),
