@@ -29,9 +29,7 @@ function App() {
         <FAQ t={t} />
       </main>
       <Footer t={t} />
-      <a className="wa-fab" href={WA_URL} target="_blank" rel="noreferrer" aria-label="WhatsApp">
-        <IconWA />
-      </a>
+      <ChatWidget />
     </>
   );
 }
