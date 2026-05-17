@@ -46,9 +46,9 @@ function IconArrowR() {
 function IconArrowL() {
   return <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8"><path d="M19 12H5M11 5l-7 7 7 7"/></svg>;
 }
-function IconWA() {
+function IconWA({ size = 20 }) {
   return (
-    <svg viewBox="0 0 24 24" fill="currentColor">
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="currentColor">
       <path d="M17.5 14.4c-.3-.1-1.7-.8-2-.9-.3-.1-.5-.1-.7.1-.2.3-.8.9-1 1.1-.2.2-.4.2-.7.1-.3-.1-1.2-.5-2.3-1.4-.9-.8-1.4-1.7-1.6-2-.2-.3 0-.5.1-.6.1-.1.3-.4.5-.5.1-.2.2-.3.3-.5.1-.2 0-.4 0-.5-.1-.2-.7-1.7-1-2.3-.3-.6-.5-.5-.7-.5h-.6c-.2 0-.5.1-.8.4-.3.3-1 1-1 2.5s1.1 2.9 1.2 3.1c.1.2 2.1 3.2 5.1 4.5 1.8.8 2.5.8 3.3.7.5-.1 1.7-.7 1.9-1.4.2-.7.2-1.3.2-1.4-.1-.2-.3-.3-.6-.4zM12 2C6.5 2 2 6.5 2 12c0 1.7.4 3.4 1.3 4.9L2 22l5.3-1.4c1.4.8 3 1.2 4.7 1.2 5.5 0 10-4.5 10-10S17.5 2 12 2z"/>
     </svg>
   );
@@ -77,36 +77,38 @@ function Nav({ t, lang, setLang, theme, setTheme }) {
   ];
 
   return (
-    <header className="topbar">
-      <div className="container-wide nav">
-        <a href="#top" className="brand">
-          <img src="assets/logo.png" alt="Marcola Garagem" />
-          <div className="brand-meta">
-            <b>MARCOLA</b>
-            <small>Garagem · Quarteira</small>
-          </div>
-        </a>
-        <nav className="nav-links">
-          {links.map(l => <a key={l.href} href={l.href}>{l.label}</a>)}
-        </nav>
-        <div className="nav-tools">
-          <button className="lang-btn" onClick={() => setLang(lang === "pt" ? "en" : "pt")} aria-label="Toggle language">
-            <span className={lang === "pt" ? "on" : ""}>PT</span>
-            <span className="sep">/</span>
-            <span className={lang === "en" ? "on" : ""}>EN</span>
-          </button>
-          <button className="icon-btn" onClick={() => setTheme(theme === "dark" ? "light" : "dark")} aria-label="Toggle theme">
-            {theme === "dark" ? <IconSun /> : <IconMoon />}
-          </button>
-          <a className="nav-phone" href={`tel:${PHONE_TEL}`}>
-            <i className="dot"></i>
-            <span>{PHONE_DISPLAY}</span>
+    <>
+      <header className="topbar">
+        <div className="container-wide nav">
+          <a href="#top" className="brand">
+            <img src="assets/logo.png" alt="Marcola Garagem" />
+            <div className="brand-meta">
+              <b>MARCOLA</b>
+              <small>Garagem · Quarteira</small>
+            </div>
           </a>
-          <button className={`hamburger ${open ? "open" : ""}`} onClick={() => setOpen(!open)} aria-label="Menu">
-            <span></span><span></span><span></span>
-          </button>
+          <nav className="nav-links">
+            {links.map(l => <a key={l.href} href={l.href}>{l.label}</a>)}
+          </nav>
+          <div className="nav-tools">
+            <button className="lang-btn" onClick={() => setLang(lang === "pt" ? "en" : "pt")} aria-label="Toggle language">
+              <span className={lang === "pt" ? "on" : ""}>PT</span>
+              <span className="sep">/</span>
+              <span className={lang === "en" ? "on" : ""}>EN</span>
+            </button>
+            <button className="icon-btn" onClick={() => setTheme(theme === "dark" ? "light" : "dark")} aria-label="Toggle theme">
+              {theme === "dark" ? <IconSun /> : <IconMoon />}
+            </button>
+            <a className="nav-phone" href={`tel:${PHONE_TEL}`}>
+              <i className="dot"></i>
+              <span>{PHONE_DISPLAY}</span>
+            </a>
+            <button className={`hamburger ${open ? "open" : ""}`} onClick={() => setOpen(!open)} aria-label="Menu">
+              <span></span><span></span><span></span>
+            </button>
+          </div>
         </div>
-      </div>
+      </header>
 
       <div className={`mobile-drawer ${open ? "open" : ""}`}>
         {links.map(l => (
@@ -127,7 +129,7 @@ function Nav({ t, lang, setLang, theme, setTheme }) {
           </a>
         </div>
       </div>
-    </header>
+    </>
   );
 }
 
