@@ -29,7 +29,7 @@ function App() {
         <FAQ t={t} />
       </main>
       <Footer t={t} />
-      <ChatWidget />
+      <ChatWidget t={t} />
     </>
   );
 }

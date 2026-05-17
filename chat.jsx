@@ -3,7 +3,6 @@ const { useState: useChatState, useEffect: useChatEffect, useRef: useChatRef } =
 
 const WEBHOOK_URL = "https://kiraiskyn8n.duckdns.org/webhook/marcola/formulario";
 
-const SERVICES = ["Revisão periódica", "Diagnóstico avariado", "Ar condicionado", "Pneus & alinhamento", "Travagem / suspensão", "Outro / não tenho a certeza"];
 const TIME_SLOTS = ["08:30", "09:30", "10:30", "11:30", "14:00", "15:30", "17:00"];
 
 function genRef() { return "MG-" + Math.floor(Math.random() * 90000 + 10000); }
@@ -71,23 +70,27 @@ function TypingIndicator() {
   );
 }
 
-// ── Steps definition ────────────────────────────────────────────────
-const STEPS = [
-  { key: "service",  type: "buttons", question: "Olá! 👋 Que tipo de intervenção precisas?", options: SERVICES },
-  { key: "brand",    type: "text",    question: "Qual é a marca do teu carro?", placeholder: "ex: BMW, Volkswagen..." },
-  { key: "model",    type: "text",    question: "E o modelo?", placeholder: "ex: Série 3, Golf..." },
-  { key: "year",     type: "text",    question: "Ano de fabrico?", placeholder: "ex: 2019", inputMode: "numeric" },
-  { key: "plate",    type: "text",    question: "Matrícula? (opcional — podes saltar)", placeholder: "ex: AA-00-BB", optional: true },
-  { key: "date",     type: "date",    question: "Quando preferes vir?" },
-  { key: "time",     type: "buttons", question: "A que horas?", options: TIME_SLOTS },
-  { key: "name",     type: "text",    question: "Qual é o teu nome?", placeholder: "Nome completo" },
-  { key: "phone",    type: "text",    question: "Número de telefone?", placeholder: "+351 9XX XXX XXX", inputMode: "tel" },
-  { key: "email",    type: "text",    question: "Email? (opcional — podes saltar)", placeholder: "email@exemplo.com", optional: true },
-  { key: "notes",    type: "text",    question: "Alguma nota adicional? (opcional)", placeholder: "Descreve o problema...", optional: true },
-];
+// ── Steps definition (built from translations) ──────────────────────
+function buildSteps(t) {
+  const b = t.booking;
+  const isPt = b.labels.brand === "Marca";
+  return [
+    { key: "service", type: "buttons", question: isPt ? "Olá! 👋 Que tipo de intervenção precisas?" : "Hello! 👋 What type of service do you need?", options: b.services },
+    { key: "brand",   type: "text",    question: isPt ? "Qual é a marca do teu carro?" : "What's your car brand?", placeholder: b.placeholders.brand },
+    { key: "model",   type: "text",    question: isPt ? "E o modelo?" : "And the model?", placeholder: b.placeholders.model },
+    { key: "year",    type: "text",    question: isPt ? "Ano de fabrico?" : "Year of manufacture?", placeholder: b.placeholders.year, inputMode: "numeric" },
+    { key: "plate",   type: "text",    question: isPt ? "Matrícula? (opcional — podes saltar)" : "Plate number? (optional — you can skip)", placeholder: b.placeholders.plate, optional: true },
+    { key: "date",    type: "date",    question: isPt ? "Quando preferes vir?" : "When would you like to come?" },
+    { key: "time",    type: "buttons", question: isPt ? "A que horas?" : "What time?", options: TIME_SLOTS },
+    { key: "name",    type: "text",    question: isPt ? "Qual é o teu nome?" : "What's your name?", placeholder: b.placeholders.name },
+    { key: "phone",   type: "text",    question: isPt ? "Número de telefone?" : "Phone number?", placeholder: b.placeholders.phone, inputMode: "tel" },
+    { key: "email",   type: "text",    question: isPt ? "Email? (opcional — podes saltar)" : "Email? (optional — you can skip)", placeholder: b.placeholders.email, optional: true },
+    { key: "notes",   type: "text",    question: isPt ? "Alguma nota adicional? (opcional)" : "Any additional notes? (optional)", placeholder: b.placeholders.notes, optional: true },
+  ];
+}
 
 // ── Main ChatWidget ──────────────────────────────────────────────────
-function ChatWidget() {
+function ChatWidget({ t }) {
   const [open, setOpen] = useChatState(false);
   const [step, setStep] = useChatState(0);
   const [data, setData] = useChatState({});
@@ -100,6 +103,7 @@ function ChatWidget() {
   const [ref] = useChatState(genRef);
   const bottomRef = useChatRef(null);
   const inputRef = useChatRef(null);
+  const STEPS = buildSteps(t);
 
   useChatEffect(() => {
     if (bottomRef.current) bottomRef.current.scrollIntoView({ behavior: "smooth" });
@@ -108,9 +112,18 @@ function ChatWidget() {
   useChatEffect(() => {
     if (open && !started) {
       setStarted(true);
-      setTimeout(() => addBotMsg(STEPS[0].question), 400);
+      setTimeout(() => addBotMsg(buildSteps(t)[0].question), 400);
     }
   }, [open]);
+
+  // Reset chat when language changes mid-conversation
+  useChatEffect(() => {
+    if (started && !done) {
+      setStep(0); setData({}); setMessages([]); setInput("");
+      setTyping(false); setStarted(false);
+      setTimeout(() => { setStarted(true); addBotMsg(buildSteps(t)[0].question); }, 300);
+    }
+  }, [t]);
 
   useChatEffect(() => {
     if (open && inputRef.current && STEPS[step]?.type === "text") {
