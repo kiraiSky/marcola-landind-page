@@ -3,4 +3,4 @@ Allow: /
 Disallow: /uploads/
 Disallow: /screenshots/
 
-Sitemap: https://marcolagaragem.duckdns.org/sitemap.xml
+Sitemap: https://www.marcolagaragem.com/sitemap.xml

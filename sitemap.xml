@@ -2,38 +2,38 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
         xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
-    <loc>https://marcolagaragem.duckdns.org/</loc>
+    <loc>https://www.marcolagaragem.com/</loc>
     <lastmod>2026-05-18</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
   </url>
   <url>
-    <loc>https://marcolagaragem.duckdns.org/#servicos</loc>
+    <loc>https://www.marcolagaragem.com/#servicos</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://marcolagaragem.duckdns.org/#sobre</loc>
+    <loc>https://www.marcolagaragem.com/#sobre</loc>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://marcolagaragem.duckdns.org/#galeria</loc>
+    <loc>https://www.marcolagaragem.com/#galeria</loc>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://marcolagaragem.duckdns.org/#avaliacoes</loc>
+    <loc>https://www.marcolagaragem.com/#avaliacoes</loc>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://marcolagaragem.duckdns.org/#marcacao</loc>
+    <loc>https://www.marcolagaragem.com/#marcacao</loc>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://marcolagaragem.duckdns.org/#contacto</loc>
+    <loc>https://www.marcolagaragem.com/#contacto</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
