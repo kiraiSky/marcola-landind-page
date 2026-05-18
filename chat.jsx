@@ -236,7 +236,7 @@ function ChatWidget({ t, lang }) {
             <div style={{ width: 36, height: 36, borderRadius: "50%", background: "var(--red)", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 18, flexShrink: 0 }}>🔧</div>
             <div style={{ flex: 1 }}>
               <div style={{ fontFamily: "Saira Condensed", fontWeight: 700, fontSize: 15, color: "var(--text)", textTransform: "uppercase", letterSpacing: ".04em" }}>Marcola Garagem</div>
-              <div style={{ fontSize: 11, color: "#22c55e", display: "flex", alignItems: "center", gap: 5, fontFamily: "JetBrains Mono", letterSpacing: ".08em" }}>
+              <div style={{ fontSize: 11, color: "#22c55e", display: "flex", alignItems: "center", gap: 5, fontFamily: "Oswald", letterSpacing: ".08em" }}>
                 <span style={{ width: 6, height: 6, borderRadius: "50%", background: "#22c55e", display: "inline-block" }}></span>
                 Online
               </div>
@@ -276,7 +276,7 @@ function ChatWidget({ t, lang }) {
                     min={new Date().toISOString().split("T")[0]}
                     onChange={e => setInput(e.target.value)}
                     className="chat-input"
-                    style={{ flex: 1, background: "var(--bg-elev)", border: "1px solid var(--border)", borderRadius: 10, padding: "10px 12px", color: "var(--text)", fontSize: 13, fontFamily: "JetBrains Mono", transition: "border-color .15s" }}
+                    style={{ flex: 1, background: "var(--bg-elev)", border: "1px solid var(--border)", borderRadius: 10, padding: "10px 12px", color: "var(--text)", fontSize: 13, fontFamily: "Oswald", transition: "border-color .15s" }}
                   />
                   <button onClick={() => input && advanceStep(input)} className="chat-send"
                     style={{ background: "var(--red)", border: "none", color: "#fff", borderRadius: 10, padding: "0 16px", cursor: "pointer", fontSize: 18, transition: "background .15s" }}>
@@ -305,7 +305,7 @@ function ChatWidget({ t, lang }) {
                   </div>
                   {currentStepDef.optional && (
                     <button className="chat-skip" onClick={() => advanceStep("", "(sem resposta)")}
-                      style={{ background: "none", border: "none", color: "var(--text-3)", fontSize: 11, cursor: "pointer", textAlign: "left", fontFamily: "JetBrains Mono", letterSpacing: ".08em", padding: "2px 0", transition: "color .15s" }}>
+                      style={{ background: "none", border: "none", color: "var(--text-3)", fontSize: 11, cursor: "pointer", textAlign: "left", fontFamily: "Oswald", letterSpacing: ".08em", padding: "2px 0", transition: "color .15s" }}>
                       Saltar →
                     </button>
                   )}

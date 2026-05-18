@@ -215,7 +215,7 @@ function Booking({ t, lang }) {
                             key={s}
                             className={`pick ${data.time === s ? "active" : ""}`}
                             onClick={() => set("time", s)}
-                            style={{ justifyContent: "center", padding: "12px 8px", fontFamily: "JetBrains Mono, monospace", fontSize: 13 }}
+                            style={{ justifyContent: "center", padding: "12px 8px", fontFamily: "Oswald, sans-serif", fontSize: 13 }}
                           >
                             {s}
                           </button>
