@@ -12,10 +12,16 @@
 <meta name="author" content="Marcola Garagem" />
 <link rel="canonical" href="https://marcolagaragem.duckdns.org/" />
 
-<!-- hreflang -->
-<link rel="alternate" hreflang="pt" href="https://marcolagaragem.duckdns.org/" />
-<link rel="alternate" hreflang="en" href="https://marcolagaragem.duckdns.org/" />
+<!-- hreflang (o site usa switch de idioma client-side na mesma URL) -->
+<link rel="alternate" hreflang="pt-PT" href="https://marcolagaragem.duckdns.org/" />
 <link rel="alternate" hreflang="x-default" href="https://marcolagaragem.duckdns.org/" />
+
+<!-- Geo (SEO local) -->
+<meta name="geo.region" content="PT-08" />
+<meta name="geo.placename" content="Quarteira, Loulé, Faro" />
+<meta name="geo.position" content="37.0662;-8.1012" />
+<meta name="ICBM" content="37.0662, -8.1012" />
+<meta name="theme-color" content="#e10600" />
 
 <!-- Open Graph (Facebook, WhatsApp, LinkedIn) -->
 <meta property="og:type" content="website" />
@@ -88,15 +94,72 @@
 }
 </script>
 
+<!-- Schema.org JSON-LD: FAQ (rich snippets no Google) -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "Onde ficam localizados?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Estamos em Urbanização Aldeia Velha 540A, 8125-018 Quarteira, Algarve. Fácil acesso pela N396, com estacionamento no local."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Como posso entrar em contacto?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Podes ligar ou enviar mensagem pelo WhatsApp para +351 935 208 176. Respondemos em menos de 1 hora durante o horário de funcionamento. Também podes usar o formulário de marcação online."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Os trabalhos têm garantia?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Sim. Todos os trabalhos têm 12 meses de garantia em peças e mão de obra. Sem letra pequena."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Como funciona o pagamento?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Pedimos 50% de sinal na confirmação da marcação e os restantes 50% na entrega do veículo. Aceitamos numerário, multibanco e transferência bancária."
+      }
+    }
+  ]
+}
+</script>
+
+<!-- Schema.org JSON-LD: Website + breadcrumb -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  "name": "Marcola Garagem",
+  "url": "https://marcolagaragem.duckdns.org/",
+  "inLanguage": "pt-PT",
+  "publisher": {
+    "@type": "Organization",
+    "name": "Marcola Garagem",
+    "logo": "https://marcolagaragem.duckdns.org/assets/logo.png"
+  }
+}
+</script>
+
 <link rel="icon" type="image/png" href="assets/logo.png" />
 
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link href="https://fonts.googleapis.com/css2?family=Saira+Condensed:wght@500;600;700;800;900&family=Manrope:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css2?family=Saira+Condensed:wght@500;600;700;800;900&family=Manrope:wght@300;400;500;600;700&family=Oswald:wght@400;500;600;700&display=swap" rel="stylesheet" />
 
-<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
-<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
-<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<script crossorigin src="https://unpkg.com/react@18.3.1/umd/react.production.min.js"></script>
+<script crossorigin src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.production.min.js"></script>
 
 <style>
   :root {
@@ -158,7 +221,7 @@
   ::selection { background: var(--red); color: #fff; }
 
   .display { font-family: "Saira Condensed", "Saira", "Oswald", sans-serif; font-weight: 800; letter-spacing: -.01em; line-height: .88; text-transform: uppercase; }
-  .mono { font-family: "JetBrains Mono", ui-monospace, monospace; }
+  .mono { font-family: "Oswald", sans-serif; }
 
   .container { width: min(1320px, calc(100% - 48px)); margin-inline: auto; }
   .container-wide { width: min(1480px, calc(100% - 48px)); margin-inline: auto; }
@@ -257,7 +320,7 @@
   .icon-btn:hover { color: var(--text); border-color: var(--border-strong); }
   .lang-btn {
     height: 40px; padding: 0 12px;
-    font-family: "JetBrains Mono"; font-size: 12px; font-weight: 500;
+    font-family: "Oswald"; font-size: 12px; font-weight: 500;
     letter-spacing: .1em;
     border: 1px solid var(--border);
     background: var(--bg-card); color: var(--text-2);
@@ -274,7 +337,7 @@
     border-radius: 4px;
     background: var(--bg-card); border: 1px solid var(--border);
     color: var(--text); text-decoration: none; font-weight: 600;
-    font-family: "JetBrains Mono"; font-size: 13px;
+    font-family: "Oswald"; font-size: 13px;
   }
   .nav-phone:hover { border-color: var(--red); color: var(--red); }
   .nav-phone .dot { width: 6px; height: 6px; border-radius: 50%; background: #1fa452; box-shadow: 0 0 0 4px rgba(31,164,82,.18); }
@@ -336,7 +399,7 @@
     position: absolute; left: 8px; top: 50%;
     transform: rotate(-90deg) translateX(50%);
     transform-origin: left center;
-    font-family: "JetBrains Mono"; font-size: 10px;
+    font-family: "Oswald"; font-size: 10px;
     letter-spacing: .35em; text-transform: uppercase;
     color: rgba(255,255,255,.55);
     white-space: nowrap;
@@ -349,7 +412,7 @@
     color: #fff;
   }
   .hero-photo-tag .ref {
-    font-family: "JetBrains Mono"; font-size: 11px;
+    font-family: "Oswald"; font-size: 11px;
     letter-spacing: .2em; text-transform: uppercase;
     color: rgba(255,255,255,.6);
   }
@@ -370,7 +433,7 @@
   .hero-tick-strip {
     position: absolute; top: 24px; right: 24px;
     z-index: 2;
-    font-family: "JetBrains Mono"; font-size: 10px;
+    font-family: "Oswald"; font-size: 10px;
     letter-spacing: .2em; text-transform: uppercase;
     color: rgba(255,255,255,.55);
     display: flex; gap: 8px; align-items: center;
@@ -382,7 +445,7 @@
 
   .hero-eyebrow {
     display: inline-flex; align-items: center; gap: 12px;
-    font-family: "JetBrains Mono"; font-size: 11px;
+    font-family: "Oswald"; font-size: 11px;
     letter-spacing: .25em; text-transform: uppercase;
     color: var(--text-2);
   }
@@ -411,7 +474,7 @@
   }
   .hero h1 small.kicker {
     display: block;
-    font-family: "JetBrains Mono";
+    font-family: "Oswald";
     font-weight: 400;
     font-size: 13px;
     letter-spacing: .2em;
@@ -446,7 +509,7 @@
 
   .scroll-cue {
     position: absolute; bottom: 28px; left: 60px;
-    font-family: "JetBrains Mono"; font-size: 10px; letter-spacing: .25em; text-transform: uppercase;
+    font-family: "Oswald"; font-size: 10px; letter-spacing: .25em; text-transform: uppercase;
     color: var(--text-3);
     display: flex; align-items: center; gap: 12px;
     z-index: 3;
@@ -473,7 +536,7 @@
 
   .eyebrow {
     display: inline-flex; align-items: center; gap: 10px;
-    font-family: "JetBrains Mono"; font-size: 12px;
+    font-family: "Oswald"; font-size: 12px;
     letter-spacing: .2em; text-transform: uppercase;
     color: var(--red);
   }
@@ -531,12 +594,12 @@
   .svc:hover .svc-num { color: var(--red); }
   .svc:hover .svc-arrow { transform: translate(4px, -4px); color: var(--red); }
   .svc-head { display: flex; justify-content: space-between; align-items: flex-start; }
-  .svc-num { font-family: "JetBrains Mono"; font-size: 12px; letter-spacing: .15em; color: var(--text-3); transition: color .25s; }
+  .svc-num { font-family: "Oswald"; font-size: 12px; letter-spacing: .15em; color: var(--text-3); transition: color .25s; }
   .svc-arrow { font-size: 22px; color: var(--text-3); transition: all .25s ease; }
   .svc h3 { font-family: "Saira Condensed"; font-weight: 700; font-size: 30px; letter-spacing: .01em; text-transform: uppercase; margin: 60px 0 0; line-height: 1; }
   .svc p { color: var(--text-2); margin-top: 14px; font-size: 14px; line-height: 1.55; }
   .svc .tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 18px; }
-  .svc .tags span { font-family: "JetBrains Mono"; font-size: 10px; letter-spacing: .1em; color: var(--text-3); border: 1px solid var(--border); padding: 4px 8px; text-transform: uppercase; }
+  .svc .tags span { font-family: "Oswald"; font-size: 10px; letter-spacing: .1em; color: var(--text-3); border: 1px solid var(--border); padding: 4px 8px; text-transform: uppercase; }
 
   /* === BRANDS === */
   .brands-strip {
@@ -594,7 +657,7 @@
     z-index: 2;
   }
   .about-caption b { font-family: "Saira Condensed"; font-weight: 800; font-size: 26px; line-height: 1; text-transform: uppercase; }
-  .about-caption span { font-family: "JetBrains Mono"; font-size: 11px; letter-spacing: .15em; text-transform: uppercase; opacity: .7; }
+  .about-caption span { font-family: "Oswald"; font-size: 11px; letter-spacing: .15em; text-transform: uppercase; opacity: .7; }
   .about-badge {
     position: absolute; top: 24px; left: 24px;
     background: var(--red); color: #fff;
@@ -610,7 +673,7 @@
     border-top: 1px solid var(--border);
   }
   .about-list-item:last-child { border-bottom: 1px solid var(--border); }
-  .about-list-item .n { font-family: "JetBrains Mono"; color: var(--red); font-size: 13px; letter-spacing: .12em; }
+  .about-list-item .n { font-family: "Oswald"; color: var(--red); font-size: 13px; letter-spacing: .12em; }
   .about-list-item h4 { font-family: "Saira Condensed"; font-weight: 700; font-size: 22px; margin: 0; text-transform: uppercase; letter-spacing: .02em; }
   .about-list-item p { color: var(--text-2); margin: 8px 0 0; font-size: 14px; line-height: 1.55; }
 
@@ -638,7 +701,7 @@
       repeating-linear-gradient(135deg, var(--bg-card) 0 12px, var(--bg-soft) 12px 24px);
     display: flex; align-items: center; justify-content: center;
     color: var(--text-3);
-    font-family: "JetBrains Mono"; font-size: 11px; letter-spacing: .15em; text-transform: uppercase;
+    font-family: "Oswald"; font-size: 11px; letter-spacing: .15em; text-transform: uppercase;
     text-align: center;
     padding: 24px;
   }
@@ -652,7 +715,7 @@
     display: flex; justify-content: space-between; align-items: flex-end;
   }
   .gallery-cap b { font-family: "Saira Condensed"; font-weight: 700; font-size: 18px; text-transform: uppercase; letter-spacing: .03em; }
-  .gallery-cap span { font-family: "JetBrains Mono"; font-size: 10px; letter-spacing: .15em; text-transform: uppercase; opacity: .7; }
+  .gallery-cap span { font-family: "Oswald"; font-size: 10px; letter-spacing: .15em; text-transform: uppercase; opacity: .7; }
 
   .gallery-nav {
     display: flex; justify-content: space-between; align-items: center;
@@ -702,7 +765,7 @@
     font-family: "Saira Condensed"; font-weight: 700; font-size: 16px;
   }
   .review-foot b { display: block; font-size: 14px; font-weight: 600; }
-  .review-foot span { font-family: "JetBrains Mono"; font-size: 11px; color: var(--text-3); letter-spacing: .05em; }
+  .review-foot span { font-family: "Oswald"; font-size: 11px; color: var(--text-3); letter-spacing: .05em; }
 
   .reviews-summary {
     margin-top: 60px;
@@ -755,7 +818,7 @@
   .booking-perks .ico { width: 22px; height: 22px; display: inline-flex; align-items: center; justify-content: center; border: 1px solid var(--red); color: var(--red); }
   .booking-side .alt {
     margin-top: 24px;
-    font-family: "JetBrains Mono"; font-size: 11px; letter-spacing: .15em; text-transform: uppercase;
+    font-family: "Oswald"; font-size: 11px; letter-spacing: .15em; text-transform: uppercase;
     color: var(--text-3);
   }
   .booking-form { padding: 56px; position: relative; }
@@ -769,7 +832,7 @@
   }
   .steps-strip b.done { background: var(--red); }
   .steps-strip b.current { background: var(--red); }
-  .step-eyebrow { font-family: "JetBrains Mono"; font-size: 11px; letter-spacing: .2em; color: var(--text-3); text-transform: uppercase; }
+  .step-eyebrow { font-family: "Oswald"; font-size: 11px; letter-spacing: .2em; color: var(--text-3); text-transform: uppercase; }
   .step-title { font-family: "Saira Condensed"; font-weight: 700; font-size: 32px; text-transform: uppercase; line-height: 1; margin: 10px 0 28px; }
   .pick-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; }
   .pick {
@@ -799,7 +862,7 @@
     border-radius: 50%; background: #fff;
   }
   .field { margin-top: 14px; }
-  .field label { display: block; font-family: "JetBrains Mono"; font-size: 11px; letter-spacing: .15em; text-transform: uppercase; color: var(--text-3); margin-bottom: 8px; }
+  .field label { display: block; font-family: "Oswald"; font-size: 11px; letter-spacing: .15em; text-transform: uppercase; color: var(--text-3); margin-bottom: 8px; }
   .field input, .field textarea, .field select {
     width: 100%;
     background: var(--bg);
@@ -840,7 +903,7 @@
   }
   .confirm-card h3 { font-family: "Saira Condensed"; font-weight: 800; font-size: 36px; text-transform: uppercase; margin: 0; }
   .confirm-card p { color: var(--text-2); margin: 16px auto 28px; max-width: 380px; font-size: 14px; line-height: 1.55; }
-  .confirm-card .code { font-family: "JetBrains Mono"; color: var(--red); letter-spacing: .15em; font-size: 14px; }
+  .confirm-card .code { font-family: "Oswald"; color: var(--red); letter-spacing: .15em; font-size: 14px; }
 
   /* === CONTACT === */
   .contact-grid {
@@ -857,11 +920,11 @@
   }
   .contact-row { padding: 22px 0; border-top: 1px solid var(--border); display: grid; grid-template-columns: 100px 1fr; gap: 24px; }
   .contact-row:first-of-type { border-top: none; padding-top: 0; }
-  .contact-row .k { font-family: "JetBrains Mono"; font-size: 11px; letter-spacing: .15em; text-transform: uppercase; color: var(--text-3); padding-top: 4px; }
+  .contact-row .k { font-family: "Oswald"; font-size: 11px; letter-spacing: .15em; text-transform: uppercase; color: var(--text-3); padding-top: 4px; }
   .contact-row .v { font-size: 16px; line-height: 1.5; }
   .contact-row .v a { color: var(--text); text-decoration: none; }
   .contact-row .v a:hover { color: var(--red); }
-  .hours-table { font-family: "JetBrains Mono"; font-size: 13px; line-height: 1.9; }
+  .hours-table { font-family: "Oswald"; font-size: 13px; line-height: 1.9; }
   .hours-table .closed { color: var(--text-3); }
 
   .map-wrap { background: var(--bg); min-height: 480px; position: relative; overflow: hidden; }
@@ -878,7 +941,7 @@
   }
   .map-pin b { font-family: "Saira Condensed"; font-weight: 700; font-size: 18px; text-transform: uppercase; letter-spacing: .03em; }
   .map-pin span { font-size: 13px; color: var(--text-2); margin-top: 4px; }
-  .map-pin .open { font-family: "JetBrains Mono"; font-size: 10px; letter-spacing: .15em; color: #1fa452; margin-top: 10px; text-transform: uppercase; display: flex; gap: 6px; align-items: center; }
+  .map-pin .open { font-family: "Oswald"; font-size: 10px; letter-spacing: .15em; color: #1fa452; margin-top: 10px; text-transform: uppercase; display: flex; gap: 6px; align-items: center; }
   .map-pin .open i { width: 6px; height: 6px; border-radius: 50%; background: #1fa452; box-shadow: 0 0 0 4px rgba(31,164,82,.18); display: inline-block; }
 
   /* === FAQ === */
@@ -958,7 +1021,7 @@
   .foot-grid { display: grid; grid-template-columns: 1.5fr 1fr 1fr 1fr; gap: 40px; }
   .foot-brand img { height: 56px; }
   .foot-brand p { color: var(--text-2); margin-top: 16px; max-width: 280px; font-size: 14px; line-height: 1.55; }
-  .foot-col h5 { font-family: "JetBrains Mono"; font-size: 11px; letter-spacing: .2em; color: var(--text-3); text-transform: uppercase; margin: 0 0 18px; }
+  .foot-col h5 { font-family: "Oswald"; font-size: 11px; letter-spacing: .2em; color: var(--text-3); text-transform: uppercase; margin: 0 0 18px; }
   .foot-col a { display: block; color: var(--text-2); text-decoration: none; padding: 6px 0; font-size: 14px; }
   .foot-col a:hover { color: var(--red); }
   .foot-bottom {
@@ -966,7 +1029,7 @@
     padding-top: 24px;
     border-top: 1px solid var(--border);
     display: flex; justify-content: space-between; align-items: center;
-    font-family: "JetBrains Mono"; font-size: 11px; letter-spacing: .12em; text-transform: uppercase; color: var(--text-3);
+    font-family: "Oswald"; font-size: 11px; letter-spacing: .12em; text-transform: uppercase; color: var(--text-3);
   }
 
   /* === REVEAL ANIMS === */
@@ -1068,7 +1131,7 @@
     font-size: 30px; text-transform: uppercase; letter-spacing: .01em;
   }
   .mobile-drawer a.mlink:hover { color: var(--red); }
-  .mobile-drawer a.mlink span { font-family: "JetBrains Mono"; font-size: 11px; color: var(--text-3); letter-spacing: .15em; font-weight: 400; }
+  .mobile-drawer a.mlink span { font-family: "Oswald"; font-size: 11px; color: var(--text-3); letter-spacing: .15em; font-weight: 400; }
   .mobile-drawer-foot { margin-top: auto; padding-top: 32px; display: flex; flex-direction: column; gap: 12px; }
 
   /* === RESPONSIVE BREAKPOINTS === */
@@ -1215,10 +1278,166 @@
 <body>
 <div id="app"></div>
 
-<script type="text/babel" src="i18n.jsx"></script>
-<script type="text/babel" src="components.jsx"></script>
-<script type="text/babel" src="booking.jsx"></script>
-<script type="text/babel" src="chat.jsx"></script>
-<script type="text/babel" src="app.jsx"></script>
+<!--
+  ============================================================
+  CONTEÚDO SEO (visível para crawlers que não executam JS).
+  É escondido visualmente quando o JS carrega (ver script abaixo).
+  NÃO REMOVER — fundamental para indexação no Google.
+  ============================================================
+-->
+<div id="seo-content" style="position:absolute;left:-99999px;top:0;width:1px;height:1px;overflow:hidden;">
+  <header>
+    <a href="https://marcolagaragem.duckdns.org/" rel="home">
+      <img src="assets/logo.png" alt="Marcola Garagem - Oficina mecânica em Quarteira, Algarve" width="180" />
+    </a>
+    <nav aria-label="Principal">
+      <ul>
+        <li><a href="#servicos">Serviços</a></li>
+        <li><a href="#sobre">Sobre</a></li>
+        <li><a href="#galeria">Galeria</a></li>
+        <li><a href="#avaliacoes">Avaliações</a></li>
+        <li><a href="#marcacao">Marcação</a></li>
+        <li><a href="#contacto">Contacto</a></li>
+      </ul>
+    </nav>
+    <a href="tel:+351935208176">+351 935 208 176</a>
+    <a href="https://api.whatsapp.com/send/?phone=351935208176">WhatsApp</a>
+  </header>
+
+  <main>
+    <section id="hero">
+      <p>Quarteira · Algarve · Desde 2015</p>
+      <h1>Marcola Garagem — Oficina mecânica premium em Quarteira, Algarve</h1>
+      <p>Oficina premium em Quarteira. Diagnóstico computorizado, manutenção e reparação para todas as marcas — do citadino diário ao desportivo de gama alta. Servimos Quarteira, Vilamoura, Loulé, Almancil e Faro.</p>
+      <ul>
+        <li><strong>10 anos</strong> de oficina</li>
+        <li><strong>+2.400</strong> carros intervencionados</li>
+        <li><strong>4.9/5</strong> de avaliação Google</li>
+        <li><strong>48 horas</strong> de resposta média</li>
+      </ul>
+    </section>
+
+    <section id="servicos">
+      <h2>Serviços completos de oficina mecânica</h2>
+      <p>Tudo num só sítio. Diagnóstico primeiro, solução depois. Sem orçamentos surpresa.</p>
+      <article>
+        <h3>Mecânica geral</h3>
+        <p>Reparação de motor, embraiagem, distribuição e transmissão. Peças originais ou equivalentes certificados.</p>
+      </article>
+      <article>
+        <h3>Diagnóstico computorizado</h3>
+        <p>Equipamento OBD multi-marca. Leitura de centralinas, codificação e parametrização ECU.</p>
+      </article>
+      <article>
+        <h3>Revisões periódicas</h3>
+        <p>Plano de manutenção segundo o fabricante. Mantém a garantia oficial intacta. Mudança de óleo, filtros e inspeção completa.</p>
+      </article>
+      <article>
+        <h3>Ar condicionado</h3>
+        <p>Carga, deteção de fugas, diagnóstico de circuito e desinfeção. Gás R134a e R1234yf.</p>
+      </article>
+      <article>
+        <h3>Pneus e alinhamento</h3>
+        <p>Montagem, equilibragem, alinhamento computorizado 3D e geometria de eixos em Quarteira.</p>
+      </article>
+      <article>
+        <h3>Travagem e suspensão</h3>
+        <p>Pastilhas, discos, amortecedores, molas e rótulas. Teste de estrada incluído.</p>
+      </article>
+    </section>
+
+    <section id="marcas">
+      <h2>Marcas que servimos</h2>
+      <p>Trabalhamos todas as marcas europeias e a maioria das asiáticas. Certificados para intervenções em viaturas de gama alta com equipamento dedicado: Porsche, Land Rover, BMW, Audi, Mercedes-Benz, Volkswagen, Renault, Peugeot, Citroën, Toyota, Ford, Opel, Volvo, Mini, Seat, Skoda, Fiat e mais.</p>
+    </section>
+
+    <section id="sobre">
+      <h2>Sobre a Marcola Garagem</h2>
+      <p>Somos uma oficina familiar em Quarteira com mentalidade de equipa de pista: rigor no diagnóstico, transparência no orçamento e respeito pelo carro do cliente.</p>
+      <p>Cada intervenção é fotografada, registada e entregue com relatório. O carro sai como entrou — limpo, com tudo no sítio, e a funcionar melhor.</p>
+      <ul>
+        <li><strong>Diagnóstico antes de tudo</strong> — Não trocamos peças por suspeita. Identificamos a causa, confirmamos e só depois agimos.</li>
+        <li><strong>Orçamento por escrito</strong> — Aprovas o trabalho antes de começarmos. Sem extras silenciosos no fim.</li>
+        <li><strong>Relatório fotográfico</strong> — Recebes registo visual de antes/durante/depois.</li>
+        <li><strong>Garantia em todos os serviços</strong> — 12 meses de garantia em peças e mão de obra. Sem letra pequena.</li>
+      </ul>
+    </section>
+
+    <section id="avaliacoes">
+      <h2>Avaliações Google — 4.9/5 em 47 avaliações</h2>
+      <blockquote>
+        <p>"Profissionais sérios e honestos. Levei o meu Macan e ficou impecável. Recebi relatório fotográfico de tudo o que foi feito — coisa que nunca vi em outra oficina."</p>
+        <cite>Ricardo P.</cite>
+      </blockquote>
+      <blockquote>
+        <p>"Diagnosticaram um problema que outra oficina não conseguiu encontrar em 3 visitas. Preço justo, trabalho limpo. Recomendo a olhos fechados."</p>
+        <cite>Sofia M.</cite>
+      </blockquote>
+      <blockquote>
+        <p>"Atendimento de outro nível. Explicaram-me cada passo, mostraram as peças trocadas. O carro saiu mais limpo do que entrou. Voltarei sempre."</p>
+        <cite>João C.</cite>
+      </blockquote>
+    </section>
+
+    <section id="marcacao">
+      <h2>Marcação online em 60 segundos</h2>
+      <p>Quatro passos, sem chamadas. Recebes confirmação no WhatsApp em menos de uma hora durante o horário de funcionamento. Resposta em menos de 1 hora, orçamento prévio sem compromisso, lugar reservado para o teu carro e lavagem cortesia incluída.</p>
+    </section>
+
+    <section id="faq">
+      <h2>Perguntas frequentes</h2>
+      <dl>
+        <dt>Trabalham todas as marcas?</dt>
+        <dd>Sim. Trabalhamos generalistas e premium — Porsche, Land Rover, BMW, Audi, Mercedes, Volkswagen, Renault, Peugeot, Toyota e outras. Equipamento de diagnóstico multi-marca.</dd>
+        <dt>Posso manter a garantia do fabricante?</dt>
+        <dd>Sim. Cumprimos integralmente o plano de manutenção do fabricante e usamos peças originais ou equivalentes certificados.</dd>
+        <dt>Quanto tempo demora um diagnóstico?</dt>
+        <dd>Entre 30 minutos e 2 horas. Damos o resultado por escrito com fotografias e orçamento antes de qualquer intervenção.</dd>
+        <dt>Têm viatura de cortesia?</dt>
+        <dd>Sim, para intervenções superiores a 1 dia útil, sujeito a disponibilidade.</dd>
+        <dt>Qual é a garantia dos trabalhos?</dt>
+        <dd>12 meses ou 20.000 km em peças e mão de obra.</dd>
+        <dt>Aceitam pagamento em prestações?</dt>
+        <dd>Sim, para orçamentos superiores a 500 € até 6 vezes sem juros.</dd>
+      </dl>
+    </section>
+
+    <section id="contacto">
+      <h2>Contactos e morada</h2>
+      <address>
+        <p><strong>Marcola Garagem</strong><br>
+        Urbanização Aldeia Velha 540A<br>
+        8125-018 Quarteira<br>
+        Faro, Portugal</p>
+        <p>Telefone: <a href="tel:+351935208176">+351 935 208 176</a><br>
+        WhatsApp: <a href="https://api.whatsapp.com/send/?phone=351935208176">+351 935 208 176</a><br>
+        Email: <a href="mailto:geral@marcolagaragem.pt">geral@marcolagaragem.pt</a></p>
+      </address>
+      <h3>Horário de funcionamento</h3>
+      <ul>
+        <li>Segunda a Sexta: 08:30 – 18:30</li>
+        <li>Sábado: 09:00 – 13:00</li>
+        <li>Domingo: Encerrado</li>
+      </ul>
+      <h3>Áreas servidas</h3>
+      <p>Oficina mecânica em Quarteira a servir clientes de Vilamoura, Loulé, Almancil, Faro, Albufeira e toda a região do Algarve.</p>
+    </section>
+  </main>
+
+  <footer>
+    <p>© 2025 Marcola Garagem. Oficina mecânica em Quarteira, Algarve. NIPC 510 000 000.</p>
+  </footer>
+</div>
+
+<noscript>
+  <style>#seo-content{position:static!important;left:auto!important;width:auto!important;height:auto!important;overflow:visible!important;padding:24px;max-width:900px;margin:0 auto;color:#f3f3f5;font-family:system-ui,sans-serif;line-height:1.6}#seo-content h1{font-size:32px}#seo-content h2{margin-top:32px;border-top:1px solid #25252d;padding-top:24px}</style>
+  <p style="background:#e10600;color:#fff;padding:12px 24px;margin:0;text-align:center;font-family:system-ui,sans-serif">Este site funciona melhor com JavaScript ativo. Ativa o JavaScript para a experiência completa.</p>
+</noscript>
+
+<script defer src="dist/i18n.js"></script>
+<script defer src="dist/components.js"></script>
+<script defer src="dist/booking.js"></script>
+<script defer src="dist/chat.js"></script>
+<script defer src="dist/app.js"></script>
 </body>
 </html>

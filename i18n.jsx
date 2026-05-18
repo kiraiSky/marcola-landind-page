@@ -178,6 +178,7 @@ const I18N = {
         ["Domingo", "Encerrado"],
       ],
       open: "Aberto agora",
+      closed: "Encerrado",
       cta: { title: "Carro a pedir atenção?", body: "Tira-te a dúvida em 5 minutos pelo WhatsApp. Mandas o vídeo ou o som — dizemos-te se vale a pena trazer.", primary: "Marcar agora", wa: "Falar no WhatsApp" },
     },
     faq: {
@@ -185,12 +186,10 @@ const I18N = {
       title1: "Antes de",
       title2: "agendares",
       items: [
-        { q: "Trabalham todas as marcas?", a: "Sim. Trabalhamos generalistas e premium — Porsche, Land Rover, BMW, Audi, Mercedes, Volkswagen, Renault, Peugeot, Toyota e outras. Equipamento de diagnóstico multi-marca." },
-        { q: "Posso manter a garantia do fabricante?", a: "Sim. Cumprimos integralmente o plano de manutenção do fabricante e usamos peças originais ou equivalentes certificados, mantendo a garantia oficial intacta." },
-        { q: "Quanto tempo demora um diagnóstico?", a: "Entre 30 minutos e 2 horas, conforme a complexidade. Damos o resultado por escrito com fotografias e orçamento detalhado antes de qualquer intervenção." },
-        { q: "Têm viatura de cortesia?", a: "Temos viatura de cortesia para intervenções superiores a 1 dia útil, sujeito a disponibilidade. Confirma na marcação." },
-        { q: "Qual é a garantia dos trabalhos?", a: "12 meses ou 20.000 km de garantia em peças e mão de obra. Sem letra pequena." },
-        { q: "Aceitam pagamento em prestações?", a: "Sim. Para orçamentos superiores a 500 €, oferecemos pagamento até 6 vezes sem juros." },
+        { q: "Onde ficam localizados?", a: "Estamos em Urbanização Aldeia Velha 540A, 8125-018 Quarteira, Algarve. Fácil acesso pela N396, com estacionamento no local." },
+        { q: "Como posso entrar em contacto?", a: "Podes ligar ou enviar mensagem pelo WhatsApp para +351 935 208 176. Respondemos em menos de 1 hora durante o horário de funcionamento. Também podes usar o formulário de marcação online." },
+        { q: "Os trabalhos têm garantia?", a: "Sim. Todos os trabalhos têm 12 meses de garantia em peças e mão de obra. Sem letra pequena." },
+        { q: "Como funciona o pagamento?", a: "Pedimos 50% de sinal na confirmação da marcação e os restantes 50% na entrega do veículo. Aceitamos numerário, multibanco e transferência bancária." },
       ],
     },
     footer: {
@@ -381,6 +380,7 @@ const I18N = {
         ["Sunday", "Closed"],
       ],
       open: "Open now",
+      closed: "Closed",
       cta: { title: "Car needing attention?", body: "Clear your doubt in 5 minutes via WhatsApp. Send a video or sound — we'll tell you if it's worth bringing in.", primary: "Book now", wa: "Chat on WhatsApp" },
     },
     faq: {
@@ -388,12 +388,10 @@ const I18N = {
       title1: "Before",
       title2: "you book",
       items: [
-        { q: "Do you work on all brands?", a: "Yes. We service mainstream and premium — Porsche, Land Rover, BMW, Audi, Mercedes, Volkswagen, Renault, Peugeot, Toyota and more. Multi-brand diagnostic equipment." },
-        { q: "Can I keep my manufacturer warranty?", a: "Yes. We follow the manufacturer's maintenance schedule and use OEM or certified equivalent parts, keeping the factory warranty intact." },
-        { q: "How long does a diagnostic take?", a: "Between 30 minutes and 2 hours depending on complexity. You get a written report with photos and a detailed quote before any work begins." },
-        { q: "Do you have a courtesy car?", a: "Yes, for jobs over 1 working day, subject to availability. Confirm at booking." },
-        { q: "What's the warranty on work?", a: "12 months or 20,000 km on parts and labour. No fine print." },
-        { q: "Do you accept instalment payment?", a: "Yes. For quotes above €500 we offer up to 6 interest-free instalments." },
+        { q: "Where are you located?", a: "We're at Urbanização Aldeia Velha 540A, 8125-018 Quarteira, Algarve. Easy access via the N396, with on-site parking." },
+        { q: "How can I get in touch?", a: "Call or WhatsApp us on +351 935 208 176. We reply within 1 hour during business hours. You can also use the online booking form." },
+        { q: "Do you offer a warranty on work?", a: "Yes. All work comes with a 12-month warranty on parts and labour. No fine print." },
+        { q: "How does payment work?", a: "We ask for a 50% deposit when confirming your booking and the remaining 50% on vehicle collection. We accept cash, card and bank transfer." },
       ],
     },
     footer: {
@@ -414,5 +412,6 @@ const WA_URL = "https://api.whatsapp.com/send/?phone=351935208176&text&type=phon
 const ADDRESS = "Urbanização Aldeia Velha 540A, 8125-018 Quarteira";
 const MAP_EMBED = "https://www.google.com/maps?q=Urbaniza%C3%A7%C3%A3o+Aldeia+Velha+540A%2C+8125-018+Quarteira&output=embed";
 const MAP_LINK = "https://www.google.com/maps/search/?api=1&query=Urbaniza%C3%A7%C3%A3o+Aldeia+Velha+540A%2C+8125-018+Quarteira";
+const DIRECTIONS_URL = "https://www.google.com/maps/dir/?api=1&destination=Urbaniza%C3%A7%C3%A3o+Aldeia+Velha+540A%2C+8125-018+Quarteira";
 
-Object.assign(window, { I18N, PHONE_DISPLAY, PHONE_TEL, WA_URL, ADDRESS, MAP_EMBED, MAP_LINK });
+Object.assign(window, { I18N, PHONE_DISPLAY, PHONE_TEL, WA_URL, ADDRESS, MAP_EMBED, MAP_LINK, DIRECTIONS_URL });

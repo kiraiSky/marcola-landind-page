@@ -166,7 +166,7 @@ function Hero({ t }) {
             {t.hero.title1}<br/>{t.hero.title2}<span className="red">.</span>
           </h1>
           <p className="lead" style={{ marginTop: 24, fontStyle: "normal" }}>
-            <span style={{ color: "var(--text-3)", fontFamily: "'JetBrains Mono', monospace", fontSize: 12, letterSpacing: ".15em", textTransform: "uppercase", display: "block", marginBottom: 14 }}>{t.hero.title3}</span>
+            <span style={{ color: "var(--text-3)", fontFamily: "'Oswald', monospace", fontSize: 12, letterSpacing: ".15em", textTransform: "uppercase", display: "block", marginBottom: 14 }}>{t.hero.title3}</span>
             {t.hero.lead}
           </p>
           <div className="hero-cta">
@@ -410,10 +410,44 @@ function Reviews({ t }) {
   );
 }
 
+// Returns true if currently within business hours (Europe/Lisbon timezone).
+// Mon–Fri 08:30–18:30, Sat 09:00–13:00, Sun closed.
+function checkIsOpen() {
+  const now = new Date();
+  const lisbon = new Intl.DateTimeFormat("en-US", {
+    timeZone: "Europe/Lisbon",
+    weekday: "short",
+    hour: "2-digit",
+    minute: "2-digit",
+    hour12: false,
+  }).formatToParts(now);
+
+  const parts = Object.fromEntries(lisbon.map(p => [p.type, p.value]));
+  const day = parts.weekday;   // "Mon", "Tue", ... "Sun"
+  const h = parseInt(parts.hour, 10);
+  const m = parseInt(parts.minute, 10);
+  const mins = h * 60 + m;
+
+  if (["Mon", "Tue", "Wed", "Thu", "Fri"].includes(day)) {
+    return mins >= 8 * 60 + 30 && mins < 18 * 60 + 30;
+  }
+  if (day === "Sat") {
+    return mins >= 9 * 60 && mins < 13 * 60;
+  }
+  return false; // Sunday
+}
+
 // ============================================================
 // CONTACT (map + info)
 // ============================================================
 function Contact({ t }) {
+  const [isOpen, setIsOpen] = React.useState(checkIsOpen);
+
+  React.useEffect(() => {
+    const id = setInterval(() => setIsOpen(checkIsOpen()), 60_000);
+    return () => clearInterval(id);
+  }, []);
+
   return (
     <section id="contact" className="section-pad">
       <div className="container">
@@ -455,7 +489,33 @@ function Contact({ t }) {
             <div className="map-pin">
               <b>Marcola Garagem</b>
               <span>{ADDRESS}</span>
-              <span className="open"><i></i>{t.contact.open}</span>
+              {isOpen
+                ? <span className="open"><i></i>{t.contact.open}</span>
+                : <span style={{ fontFamily: "var(--mono, 'Oswald')", fontSize: 10, letterSpacing: ".15em", color: "var(--text-3)", marginTop: 10, textTransform: "uppercase", display: "flex", gap: 6, alignItems: "center" }}><i style={{ width: 6, height: 6, borderRadius: "50%", background: "var(--text-3)", display: "inline-block" }}></i>{t.contact.closed}</span>
+              }
+              <a
+                href={DIRECTIONS_URL}
+                target="_blank"
+                rel="noreferrer"
+                style={{
+                  marginTop: 12,
+                  display: "inline-flex", alignItems: "center", gap: 6,
+                  padding: "7px 12px",
+                  background: "var(--red)",
+                  color: "#fff",
+                  fontFamily: "var(--mono, 'Oswald')",
+                  fontSize: 10,
+                  letterSpacing: ".15em",
+                  textTransform: "uppercase",
+                  textDecoration: "none",
+                  fontWeight: 600,
+                }}
+              >
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                  <polygon points="3 11 22 2 13 21 11 13 3 11"/>
+                </svg>
+                Direções
+              </a>
             </div>
             <iframe src={MAP_EMBED} loading="lazy" referrerPolicy="no-referrer-when-downgrade" title="Mapa Marcola Garagem"></iframe>
           </div>
