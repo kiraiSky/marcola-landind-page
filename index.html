@@ -4,10 +4,16 @@
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
 
+<!-- Security -->
+<meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests" />
+<meta http-equiv="X-Content-Type-Options" content="nosniff" />
+<meta name="referrer" content="strict-origin-when-cross-origin" />
+<meta http-equiv="Permissions-Policy" content="geolocation=(), microphone=(), camera=()" />
+
 <!-- SEO Base -->
-<title>Marcola Garagem · Oficina Mecânica em Quarteira · Algarve</title>
-<meta name="description" content="Oficina mecânica premium em Quarteira, Algarve. Diagnóstico computorizado, revisões, ar condicionado, pneus e alinhamento. Todas as marcas. Marca o teu serviço online — resposta em 1 hora." />
-<meta name="keywords" content="oficina mecânica Quarteira, mecânico Quarteira, oficina Algarve, diagnóstico automóvel, revisão carro Quarteira, ar condicionado carro, alinhamento pneus Quarteira, mecânica geral Loulé" />
+<title>Marcola Garagem · Car Mechanic & Workshop in Quarteira · Algarve</title>
+<meta name="description" content="Trusted mechanic & car workshop in Quarteira, Algarve. Car servicing, diagnostics, MOT-style inspection, air-con, tyres, brakes. English-speaking. Book online." />
+<meta name="keywords" content="mechanic Quarteira, car workshop Algarve, car servicing Quarteira, English speaking mechanic Algarve, car repair Quarteira, oil change Quarteira, MOT inspection Algarve, brake repair, tyres Quarteira, air conditioning car Algarve, oficina mecânica Quarteira, mecânico Quarteira, diagnóstico automóvel" />
 <meta name="robots" content="index, follow" />
 <meta name="author" content="Marcola Garagem" />
 <link rel="canonical" href="https://www.marcolagaragem.com/" />
@@ -26,16 +32,17 @@
 <!-- Open Graph (Facebook, WhatsApp, LinkedIn) -->
 <meta property="og:type" content="website" />
 <meta property="og:url" content="https://www.marcolagaragem.com/" />
-<meta property="og:title" content="Marcola Garagem · Oficina Mecânica em Quarteira" />
-<meta property="og:description" content="Oficina mecânica premium em Quarteira, Algarve. Diagnóstico computorizado, revisões e reparação para todas as marcas. Marca online — resposta em 1 hora." />
+<meta property="og:title" content="Marcola Garagem · Car Mechanic in Quarteira, Algarve" />
+<meta property="og:description" content="Trusted car workshop in Quarteira. Servicing, diagnostics, MOT-style inspection, air-con, tyres. English-speaking team. Book online." />
 <meta property="og:image" content="https://www.marcolagaragem.com/assets/logo.png" />
 <meta property="og:locale" content="pt_PT" />
+<meta property="og:locale:alternate" content="en_GB" />
 <meta property="og:site_name" content="Marcola Garagem" />
 
 <!-- Twitter Card -->
 <meta name="twitter:card" content="summary_large_image" />
-<meta name="twitter:title" content="Marcola Garagem · Oficina Mecânica em Quarteira" />
-<meta name="twitter:description" content="Oficina mecânica premium em Quarteira, Algarve. Diagnóstico, revisões e reparação para todas as marcas." />
+<meta name="twitter:title" content="Marcola Garagem · Car Mechanic in Quarteira, Algarve" />
+<meta name="twitter:description" content="Trusted car workshop in Quarteira. Servicing, diagnostics, air-con, tyres. English-speaking team." />
 <meta name="twitter:image" content="https://www.marcolagaragem.com/assets/logo.png" />
 
 <!-- Schema.org JSON-LD: Negócio Local -->
@@ -44,7 +51,18 @@
   "@context": "https://schema.org",
   "@type": "AutoRepair",
   "name": "Marcola Garagem",
-  "description": "Oficina mecânica premium em Quarteira, Algarve. Diagnóstico computorizado, revisões, ar condicionado, pneus e alinhamento para todas as marcas.",
+  "alternateName": "Marcola Garagem — Car Mechanic Quarteira",
+  "description": "Trusted car mechanic and workshop in Quarteira, Algarve. Car servicing, computer diagnostics, MOT-style inspection, air conditioning, tyres, wheel alignment and brakes for all makes. English-speaking team.",
+  "knowsLanguage": ["pt-PT", "en-GB"],
+  "makesOffer": [
+    { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Car servicing" } },
+    { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Computer diagnostics" } },
+    { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "MOT-style inspection (IPO)" } },
+    { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Oil & filter change" } },
+    { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Air conditioning regas & repair" } },
+    { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Tyres & wheel alignment" } },
+    { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Brakes & suspension repair" } }
+  ],
   "url": "https://www.marcolagaragem.com/",
   "logo": "https://www.marcolagaragem.com/assets/logo.png",
   "image": "https://www.marcolagaragem.com/assets/logo.png",
@@ -67,14 +85,8 @@
     {
       "@type": "OpeningHoursSpecification",
       "dayOfWeek": ["Monday","Tuesday","Wednesday","Thursday","Friday"],
-      "opens": "08:30",
-      "closes": "18:30"
-    },
-    {
-      "@type": "OpeningHoursSpecification",
-      "dayOfWeek": "Saturday",
       "opens": "09:00",
-      "closes": "13:00"
+      "closes": "18:00"
     }
   ],
   "priceRange": "€€",
@@ -472,7 +484,7 @@
     color: var(--red);
     font-weight: 900;
   }
-  .hero h1 small.kicker {
+  .hero-kicker {
     display: block;
     font-family: "Oswald";
     font-weight: 400;
@@ -480,8 +492,9 @@
     letter-spacing: .2em;
     text-transform: uppercase;
     color: var(--text-3);
-    margin-bottom: 20px;
+    margin: 28px 0 14px;
   }
+  .hero h1 { margin-top: 0; }
   .hero p.lead {
     margin-top: 32px;
     font-size: clamp(16px, 1.3vw, 18px);
@@ -1024,6 +1037,7 @@
   .foot-col h5 { font-family: "Oswald"; font-size: 11px; letter-spacing: .2em; color: var(--text-3); text-transform: uppercase; margin: 0 0 18px; }
   .foot-col a { display: block; color: var(--text-2); text-decoration: none; padding: 6px 0; font-size: 14px; }
   .foot-col a:hover { color: var(--red); }
+  .foot-col .foot-legal { display: block; color: var(--text-3); padding: 6px 0; font-size: 14px; }
   .foot-bottom {
     margin-top: 60px;
     padding-top: 24px;

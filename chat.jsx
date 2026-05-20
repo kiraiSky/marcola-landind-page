@@ -3,7 +3,7 @@ const { useState: useChatState, useEffect: useChatEffect, useRef: useChatRef } =
 
 const WEBHOOK_URL = "https://kiraiskyn8n.duckdns.org/webhook/marcola/formulario";
 
-const TIME_SLOTS = ["08:30", "09:30", "10:30", "11:30", "14:00", "15:30", "17:00"];
+const TIME_SLOTS = ["09:00", "10:00", "11:00", "14:00", "15:30", "17:00"];
 
 function genRef() { return "MG-" + Math.floor(Math.random() * 90000 + 10000); }
 

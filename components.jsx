@@ -78,7 +78,7 @@ function Nav({ t, lang, setLang, theme, setTheme }) {
       <header className={`topbar${open ? " topbar-drawer-open" : ""}`}>
         <div className="container-wide nav">
           <a href="#top" className="brand">
-            <img src="assets/logo.png" alt="Marcola Garagem" />
+            <img src="assets/logo.png" alt="Marcola Garagem — car mechanic and workshop in Quarteira, Algarve" width="44" height="44" />
             <div className="brand-meta">
               <b>MARCOLA</b>
               <small>Garagem · Quarteira</small>
@@ -161,10 +161,8 @@ function Hero({ t }) {
               <span style={{ color: "var(--text-3)" }}>N° 01</span>
             </span>
           </div>
-          <h1>
-            <small className="kicker">— {t.hero.kicker}</small>
-            {t.hero.title1}<br/>{t.hero.title2}<span className="red">.</span>
-          </h1>
+          <span className="hero-kicker">— {t.hero.kicker}</span>
+          <h1>{t.hero.title1} {t.hero.title2}.</h1>
           <p className="lead" style={{ marginTop: 24, fontStyle: "normal" }}>
             <span style={{ color: "var(--text-3)", fontFamily: "'Oswald', monospace", fontSize: 12, letterSpacing: ".15em", textTransform: "uppercase", display: "block", marginBottom: 14 }}>{t.hero.title3}</span>
             {t.hero.lead}
@@ -193,12 +191,12 @@ function Hero({ t }) {
         <span className="hero-vlabel">N 37°04' · W 8°06' · Quarteira</span>
         <div className="hero-tick-strip">
           <span className="tick"></span>
-          <span>BAY 01 / LIVE</span>
+          <span>{t.hero.bayLabel}</span>
         </div>
         <div className="hero-photo-tag">
           <div>
             <span className="red-mark"></span>
-            <span className="ref">In the shop</span>
+            <span className="ref">{t.hero.inShop}</span>
             <b>Porsche Macan GTS</b>
           </div>
           <span className="ref">'24</span>
@@ -278,7 +276,7 @@ function About({ t }) {
           <Reveal>
             <div className="about-imgwrap">
               <span className="about-badge">{t.about.badge}</span>
-              <img src="assets/photo-diagnostic.png" alt="Diagnóstico ao vivo" />
+              <img src="assets/photo-diagnostic.png" alt={t.about.imgAlt} loading="lazy" width="800" height="1000" />
               <div className="about-caption">
                 <b>{t.about.caption1}</b>
                 <span>{t.about.caption2}</span>
@@ -343,7 +341,7 @@ function Gallery({ t }) {
                     </div>
                   ) : (
                     <>
-                      <img src={p.src} alt={t.gallery.items[i].cap} />
+                      <img src={p.src} alt={`${t.gallery.items[i].cap} — ${t.gallery.items[i].meta} at Marcola Garagem, Quarteira`} loading="lazy" width="800" height="600" />
                       <div className="gallery-cap">
                         <b>{t.gallery.items[i].cap}</b>
                         <span>{t.gallery.items[i].meta}</span>
@@ -574,28 +572,25 @@ function Footer({ t }) {
       <div className="container">
         <div className="foot-grid">
           <div className="foot-brand">
-            <img src="assets/logo.png" alt="Marcola" />
+            <img src="assets/logo.png" alt="Marcola Garagem — car workshop logo" width="56" height="56" />
             <p>{t.footer.tag}</p>
           </div>
           <div className="foot-col">
             <h5>{t.footer.explore}</h5>
-            <a href="#services">{t.nav.services}</a>
-            <a href="#about">{t.nav.about}</a>
-            <a href="#gallery">{t.nav.gallery}</a>
-            <a href="#reviews">{t.nav.reviews}</a>
-            <a href="#booking">{t.nav.booking}</a>
-            <a href="#contact">{t.nav.contact}</a>
+            {t.footer.exploreLinks.map((l, i) => (
+              <a key={i} href={l.href}>{l.label}</a>
+            ))}
           </div>
           <div className="foot-col">
             <h5>{t.footer.legal}</h5>
-            {t.footer.legalLinks.map((l, i) => <a key={i} href="#">{l}</a>)}
+            {t.footer.legalLinks.map((l, i) => <span key={i} className="foot-legal">{l}</span>)}
+            <a href={`mailto:geral@marcolagaragem.pt?subject=${encodeURIComponent(t.footer.dpoSubject)}`}>{t.footer.dpoLink}</a>
           </div>
           <div className="foot-col">
             <h5>{t.footer.followUs}</h5>
-            <a href={WA_URL} target="_blank" rel="noreferrer">WhatsApp</a>
-            <a href="#">Instagram</a>
-            <a href="#">Facebook</a>
-            <a href="https://www.google.com/search?q=Marcola+Garagem+Quarteira" target="_blank" rel="noreferrer">Google</a>
+            <a href={WA_URL} target="_blank" rel="noopener noreferrer">{t.footer.waLink}</a>
+            <a href="https://www.google.com/search?q=Marcola+Garagem+Quarteira" target="_blank" rel="noopener noreferrer">{t.footer.googleLink}</a>
+            <a href={`tel:${PHONE_TEL}`}>{t.footer.callLink}</a>
           </div>
         </div>
         <div className="foot-bottom">
