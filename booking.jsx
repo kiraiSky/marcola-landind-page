@@ -1,13 +1,128 @@
 // Multi-step booking form
 const { useState: useStateBk } = React;
 
+const PHONE_COUNTRIES = [
+  { code: "PT", flag: "🇵🇹", flagCode: "pt", name: "Portugal", dial: "351", min: 9, max: 9, placeholder: "935 208 176" },
+  { code: "GB", flag: "🇬🇧", flagCode: "gb", name: "United Kingdom", dial: "44", min: 9, max: 10, trunk: "0", placeholder: "7123 456789" },
+  { code: "ES", flag: "🇪🇸", flagCode: "es", name: "España", dial: "34", min: 9, max: 9, placeholder: "612 345 678" },
+  { code: "FR", flag: "🇫🇷", flagCode: "fr", name: "France", dial: "33", min: 9, max: 9, trunk: "0", placeholder: "6 12 34 56 78" },
+  { code: "DE", flag: "🇩🇪", flagCode: "de", name: "Deutschland", dial: "49", min: 7, max: 12, trunk: "0", placeholder: "151 23456789" },
+  { code: "NL", flag: "🇳🇱", flagCode: "nl", name: "Nederland", dial: "31", min: 9, max: 9, trunk: "0", placeholder: "6 12345678" },
+  { code: "BE", flag: "🇧🇪", flagCode: "be", name: "België", dial: "32", min: 8, max: 9, trunk: "0", placeholder: "470 12 34 56" },
+  { code: "IE", flag: "🇮🇪", flagCode: "ie", name: "Ireland", dial: "353", min: 7, max: 9, trunk: "0", placeholder: "85 123 4567" },
+  { code: "BR", flag: "🇧🇷", flagCode: "br", name: "Brasil", dial: "55", min: 10, max: 11, trunk: "0", placeholder: "11 91234 5678" },
+  { code: "US", flag: "🇺🇸", flagCode: "us", name: "USA / Canada", dial: "1", min: 10, max: 10, placeholder: "415 555 0123" },
+];
+
+function getPhoneCountry(code) {
+  return PHONE_COUNTRIES.find((country) => country.code === code) || PHONE_COUNTRIES[0];
+}
+
+function stripPhoneTrunk(digits, country) {
+  if (country.trunk && digits.startsWith(country.trunk) && digits.length > country.max) {
+    return digits.slice(country.trunk.length);
+  }
+  return digits;
+}
+
+function formatPhoneNational(digits) {
+  return String(digits || "").replace(/\D/g, "").replace(/(\d{3})(?=\d)/g, "$1 ").trim();
+}
+
+function normalizePhone(raw, countryCode) {
+  const country = getPhoneCountry(countryCode);
+  const rawText = String(raw || "").trim();
+  let digits = rawText.replace(/\D/g, "");
+  let intl = "";
+
+  if (rawText.startsWith("+")) {
+    intl = digits;
+  } else if (digits.startsWith("00")) {
+    intl = digits.slice(2);
+  } else if (digits.startsWith(country.dial) && digits.length > country.max) {
+    intl = digits;
+  } else {
+    intl = country.dial + stripPhoneTrunk(digits, country);
+  }
+
+  const matchedCountry = PHONE_COUNTRIES
+    .slice()
+    .sort((a, b) => b.dial.length - a.dial.length)
+    .find((item) => intl.startsWith(item.dial)) || country;
+  const national = stripPhoneTrunk(intl.slice(matchedCountry.dial.length), matchedCountry);
+  const valid = national.length >= matchedCountry.min && national.length <= matchedCountry.max;
+
+  return {
+    valid,
+    country: matchedCountry,
+    national,
+    international: matchedCountry.dial + national,
+    e164: `+${matchedCountry.dial}${national}`,
+    display: `${matchedCountry.flag} +${matchedCountry.dial} ${formatPhoneNational(national)}`.trim(),
+  };
+}
+
+function CountryFlag({ country }) {
+  return (
+    <img
+      className="country-flag"
+      src={`https://flagcdn.com/w40/${country.flagCode}.png`}
+      srcSet={`https://flagcdn.com/w80/${country.flagCode}.png 2x`}
+      alt=""
+      loading="lazy"
+    />
+  );
+}
+
+function PhoneCountryPicker({ value, onChange, compact = false }) {
+  const [open, setOpen] = useStateBk(false);
+  const selected = getPhoneCountry(value);
+
+  return (
+    <div className={`country-picker ${compact ? "compact" : ""}`}>
+      <button
+        type="button"
+        className="country-picker-btn"
+        onClick={() => setOpen((current) => !current)}
+        aria-haspopup="listbox"
+        aria-expanded={open}
+        aria-label={`Indicativo ${selected.name}`}
+      >
+        <CountryFlag country={selected} />
+        <span>+{selected.dial}</span>
+        <span className="country-chevron">⌄</span>
+      </button>
+      {open && (
+        <div className="country-picker-menu" role="listbox">
+          {PHONE_COUNTRIES.map((country) => (
+            <button
+              type="button"
+              key={country.code}
+              className={`country-picker-option ${country.code === selected.code ? "active" : ""}`}
+              onClick={() => {
+                onChange(country.code);
+                setOpen(false);
+              }}
+              role="option"
+              aria-selected={country.code === selected.code}
+            >
+              <CountryFlag country={country} />
+              <span>+{country.dial}</span>
+            </button>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
+
 function Booking({ t, lang }) {
   const [step, setStep] = useStateBk(0);
   const [data, setData] = useStateBk({
     service: "",
     brand: "", model: "", year: "", plate: "",
     date: "", time: "",
-    name: "", phone: "", email: "", notes: "",
+    name: "", phone: "", phoneCountry: "PT", email: "", notes: "",
   });
   const [done, setDone] = useStateBk(false);
   const [loading, setLoading] = useStateBk(false);
@@ -22,24 +137,15 @@ function Booking({ t, lang }) {
     if (step === 0) return !!data.service;
     if (step === 1) return data.model && data.plate;
     if (step === 2) return data.date && data.time;
-    if (step === 3) return data.name && data.phone;
+    if (step === 3) return data.name && normalizePhone(data.phone, data.phoneCountry).valid;
     return false;
   };
 
   const sanitize = (str) => String(str).trim().slice(0, 500).replace(/[<>'"]/g, "");
 
-  const formatPhone = (raw) => {
-    let n = String(raw).replace(/[\s\-().]/g, "");
-    if (n.startsWith("+")) n = n.slice(1);
-    if (n.startsWith("00")) n = n.slice(2);
-    if (/^9\d{8}$/.test(n)) n = "351" + n;
-    if (/^2\d{8}$/.test(n)) n = "351" + n;
-    return n;
-  };
-
   const validateStep4 = () => {
-    const phoneClean = data.phone.replace(/\s/g, "");
-    if (!/^\+?[0-9]{9,15}$/.test(phoneClean)) return "Número de telefone inválido.";
+    const phone = normalizePhone(data.phone, data.phoneCountry);
+    if (!phone.valid) return "Numero de telefone invalido para o pais selecionado.";
     if (data.name.length < 2) return "Nome demasiado curto.";
     return null;
   };
@@ -52,6 +158,7 @@ function Booking({ t, lang }) {
     setLastSubmit(now);
     setLoading(true);
     setError(null);
+    const phone = normalizePhone(data.phone, data.phoneCountry);
     try {
       await fetch("https://kiraiskyn8n.duckdns.org/webhook/marcola/formulario", {
         method: "POST",
@@ -66,7 +173,11 @@ function Booking({ t, lang }) {
           date: sanitize(data.date),
           time: sanitize(data.time),
           name: sanitize(data.name),
-          phone: formatPhone(data.phone),
+          phone: phone.international,
+          phoneE164: phone.e164,
+          phoneCountry: phone.country.code,
+          phonePrefix: `+${phone.country.dial}`,
+          phoneNational: phone.national,
           email: sanitize(data.email),
           notes: sanitize(data.notes),
           lang: lang || "pt",
@@ -84,7 +195,7 @@ function Booking({ t, lang }) {
   const reset = () => {
     setDone(false);
     setStep(0);
-    setData({ service: "", brand: "", model: "", year: "", plate: "", date: "", time: "", name: "", phone: "", email: "", notes: "" });
+    setData({ service: "", brand: "", model: "", year: "", plate: "", date: "", time: "", name: "", phone: "", phoneCountry: "PT", email: "", notes: "" });
   };
 
   // build time slots
@@ -230,7 +341,30 @@ function Booking({ t, lang }) {
                     </div>
                     <div className="field">
                       <label>{t.booking.labels.phone}</label>
-                      <input value={data.phone} onChange={(e) => set("phone", e.target.value)} placeholder={t.booking.placeholders.phone} inputMode="tel" />
+                      <div className="phone-control">
+                        <PhoneCountryPicker
+                          value={data.phoneCountry}
+                          onChange={(countryCode) => set("phoneCountry", countryCode)}
+                        />
+                        <input
+                          value={data.phone}
+                          onChange={(e) => set("phone", e.target.value)}
+                          onBlur={() => {
+                            const phone = normalizePhone(data.phone, data.phoneCountry);
+                            if (phone.national) set("phone", formatPhoneNational(phone.national));
+                          }}
+                          placeholder={getPhoneCountry(data.phoneCountry).placeholder}
+                          inputMode="tel"
+                          autoComplete="tel-national"
+                        />
+                      </div>
+                      {data.phone && (
+                        <div className={`field-hint ${normalizePhone(data.phone, data.phoneCountry).valid ? "ok" : ""}`}>
+                          {normalizePhone(data.phone, data.phoneCountry).valid
+                            ? `Sera enviado: ${normalizePhone(data.phone, data.phoneCountry).e164}`
+                            : `Exemplo: ${getPhoneCountry(data.phoneCountry).placeholder}`}
+                        </div>
+                      )}
                     </div>
                     <div className="field">
                       <label>{t.booking.labels.notes}</label>
@@ -265,4 +399,4 @@ function Booking({ t, lang }) {
   );
 }
 
-Object.assign(window, { Booking });
+Object.assign(window, { PHONE_COUNTRIES, getPhoneCountry, normalizePhone, formatPhoneNational, CountryFlag, PhoneCountryPicker, Booking });

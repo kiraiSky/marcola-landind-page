@@ -7,25 +7,6 @@ const TIME_SLOTS = ["09:00", "10:00", "11:00", "14:00", "15:30", "17:00"];
 
 function genRef() { return "MG-" + Math.floor(Math.random() * 90000 + 10000); }
 
-function formatPhone(raw) {
-  // Remove tudo exceto dígitos e +
-  let n = String(raw).replace(/[\s\-().]/g, "");
-
-  // Remove + inicial
-  if (n.startsWith("+")) n = n.slice(1);
-
-  // Remove 00 inicial (ex: 00351...)
-  if (n.startsWith("00")) n = n.slice(2);
-
-  // Número português sem código de país (9 dígitos a começar por 9)
-  if (/^9\d{8}$/.test(n)) n = "351" + n;
-
-  // Número português com 2 (telefone fixo, 9 dígitos a começar por 2)
-  if (/^2\d{8}$/.test(n)) n = "351" + n;
-
-  return n;
-}
-
 function sanitizeChat(str) { return String(str || "").trim().slice(0, 500).replace(/[<>'"]/g, ""); }
 
 // ── Chat bubble components ──────────────────────────────────────────
@@ -81,7 +62,7 @@ function buildSteps(t) {
     { key: "date",    type: "date",    question: isPt ? "Quando preferes vir?" : "When would you like to come?" },
     { key: "time",    type: "buttons", question: isPt ? "A que horas?" : "What time?", options: TIME_SLOTS },
     { key: "name",    type: "text",    question: isPt ? "Qual é o teu nome?" : "What's your name?", placeholder: b.placeholders.name },
-    { key: "phone",   type: "text",    question: isPt ? "Número de telefone?" : "Phone number?", placeholder: b.placeholders.phone, inputMode: "tel" },
+    { key: "phone",   type: "phone",   question: isPt ? "Numero de telefone?" : "Phone number?", placeholder: b.placeholders.phone, inputMode: "tel" },
     { key: "notes",   type: "text",    question: isPt ? "Alguma nota adicional? (opcional)" : "Any additional notes? (optional)", placeholder: b.placeholders.notes, optional: true },
   ];
 }
@@ -97,6 +78,8 @@ function ChatWidget({ t, lang }) {
   const [done, setDone] = useChatState(false);
   const [loading, setLoading] = useChatState(false);
   const [started, setStarted] = useChatState(false);
+  const [phoneCountry, setPhoneCountry] = useChatState("PT");
+  const [phoneError, setPhoneError] = useChatState("");
   const [ref] = useChatState(genRef);
   const bottomRef = useChatRef(null);
   const inputRef = useChatRef(null);
@@ -117,13 +100,14 @@ function ChatWidget({ t, lang }) {
   useChatEffect(() => {
     if (started && !done) {
       setStep(0); setData({}); setMessages([]); setInput("");
+      setPhoneCountry("PT"); setPhoneError("");
       setTyping(false); setStarted(false);
       setTimeout(() => { setStarted(true); addBotMsg(buildSteps(t)[0].question); }, 300);
     }
   }, [t]);
 
   useChatEffect(() => {
-    if (open && inputRef.current && STEPS[step]?.type === "text") {
+    if (open && inputRef.current && ["text", "phone"].includes(STEPS[step]?.type)) {
       inputRef.current.focus();
     }
   }, [step, open]);
@@ -136,12 +120,14 @@ function ChatWidget({ t, lang }) {
     setMessages(m => [...m, { type: "user", text }]);
   };
 
-  const advanceStep = (value, displayValue) => {
+  const advanceStep = (value, displayValue, extraData = {}) => {
     const currentStep = STEPS[step];
     const clean = sanitizeChat(value);
-    setData(d => ({ ...d, [currentStep.key]: clean }));
+    const nextData = { ...data, [currentStep.key]: clean, ...extraData };
+    setData(nextData);
     addUserMsg(displayValue || clean);
     setInput("");
+    setPhoneError("");
 
     const nextStep = step + 1;
     if (nextStep >= STEPS.length) {
@@ -150,7 +136,7 @@ function ChatWidget({ t, lang }) {
       setTimeout(() => {
         setTyping(false);
         addBotMsg("Perfeito! ✅ A enviar a tua marcação...");
-        submitForm({ ...data, [currentStep.key]: clean });
+        submitForm(nextData);
       }, 800);
     } else {
       setTyping(true);
@@ -164,6 +150,7 @@ function ChatWidget({ t, lang }) {
 
   const submitForm = async (formData) => {
     setLoading(true);
+    const phone = normalizePhone(formData.phone || "", formData.phoneCountry || phoneCountry);
     try {
       await fetch(WEBHOOK_URL, {
         method: "POST",
@@ -171,7 +158,11 @@ function ChatWidget({ t, lang }) {
         body: JSON.stringify({
           ref,
           ...formData,
-          phone: formatPhone(formData.phone || ""),
+          phone: phone.international,
+          phoneE164: phone.e164,
+          phoneCountry: phone.country.code,
+          phonePrefix: `+${phone.country.dial}`,
+          phoneNational: phone.national,
           submittedAt: new Date().toISOString(),
           lang: lang || "pt",
           source: "chatbot",
@@ -194,12 +185,30 @@ function ChatWidget({ t, lang }) {
     advanceStep(input.trim() || "—", input.trim() || "(sem resposta)");
   };
 
+  const handlePhone = () => {
+    const phone = normalizePhone(input, phoneCountry);
+    if (!phone.valid) {
+      setPhoneError(`Exemplo: ${getPhoneCountry(phoneCountry).placeholder}`);
+      return;
+    }
+    advanceStep(phone.international, phone.display, {
+      phoneE164: phone.e164,
+      phoneCountry: phone.country.code,
+      phonePrefix: `+${phone.country.dial}`,
+      phoneNational: phone.national,
+    });
+  };
+
   const handleKeyDown = (e) => {
-    if (e.key === "Enter") handleText();
+    if (e.key === "Enter") {
+      if (currentStepDef?.type === "phone") handlePhone();
+      else handleText();
+    }
   };
 
   const resetChat = () => {
     setStep(0); setData({}); setMessages([]); setInput("");
+    setPhoneCountry("PT"); setPhoneError("");
     setTyping(false); setDone(false); setLoading(false); setStarted(false);
   };
 
@@ -280,6 +289,40 @@ function ChatWidget({ t, lang }) {
                     style={{ background: "var(--red)", border: "none", color: "#fff", borderRadius: 10, padding: "0 16px", cursor: "pointer", fontSize: 18, transition: "background .15s" }}>
                     →
                   </button>
+                </div>
+              )}
+
+              {currentStepDef?.type === "phone" && (
+                <div style={{ display: "flex", flexDirection: "column", gap: 7 }}>
+                  <div style={{ display: "grid", gridTemplateColumns: "118px 1fr auto", gap: 8 }}>
+                    <PhoneCountryPicker
+                      value={phoneCountry}
+                      onChange={countryCode => { setPhoneCountry(countryCode); setPhoneError(""); }}
+                      compact
+                    />
+                    <input
+                      ref={inputRef}
+                      value={input}
+                      onChange={e => { setInput(e.target.value); setPhoneError(""); }}
+                      onBlur={() => {
+                        const phone = normalizePhone(input, phoneCountry);
+                        if (phone.national) setInput(formatPhoneNational(phone.national));
+                      }}
+                      onKeyDown={handleKeyDown}
+                      placeholder={getPhoneCountry(phoneCountry).placeholder}
+                      inputMode="tel"
+                      autoComplete="tel-national"
+                      className="chat-input"
+                      style={{ minWidth: 0, background: "var(--bg-elev)", border: "1px solid var(--border)", borderRadius: 10, padding: "10px 12px", color: "var(--text)", fontSize: 13, fontFamily: "Manrope, sans-serif", transition: "border-color .15s" }}
+                    />
+                    <button onClick={handlePhone} className="chat-send"
+                      style={{ background: "var(--red)", border: "none", color: "#fff", borderRadius: 10, padding: "0 14px", cursor: "pointer", fontSize: 18, transition: "background .15s" }}>
+                      â†’
+                    </button>
+                  </div>
+                  <div style={{ color: phoneError ? "var(--red)" : "var(--text-3)", fontSize: 11, lineHeight: 1.35 }}>
+                    {phoneError || (input && normalizePhone(input, phoneCountry).valid ? `Sera enviado: ${normalizePhone(input, phoneCountry).e164}` : `Exemplo: ${getPhoneCountry(phoneCountry).placeholder}`)}
+                  </div>
                 </div>
               )}
 
