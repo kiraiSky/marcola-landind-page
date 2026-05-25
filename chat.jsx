@@ -37,7 +37,7 @@ function BotMsg({ text, delay = 0 }) {
   if (!visible) return null;
   return (
     <div style={{ display: "flex", gap: 8, alignItems: "flex-end", marginBottom: 10, animation: "chatIn .25s ease" }}>
-      <div style={{ width: 28, height: 28, borderRadius: "50%", background: "var(--red)", flexShrink: 0, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 13 }}>🔧</div>
+      <div style={{ width: 28, height: 28, borderRadius: "50%", background: "var(--red)", flexShrink: 0, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 13 }}><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg></div>
       <div style={{ background: "var(--bg-card)", border: "1px solid var(--border)", borderRadius: "16px 16px 16px 4px", padding: "10px 14px", fontSize: 13, lineHeight: 1.5, color: "var(--text)", maxWidth: "80%" }}>
         {text}
       </div>
@@ -58,7 +58,7 @@ function UserMsg({ text }) {
 function TypingIndicator() {
   return (
     <div style={{ display: "flex", gap: 8, alignItems: "flex-end", marginBottom: 10 }}>
-      <div style={{ width: 28, height: 28, borderRadius: "50%", background: "var(--red)", flexShrink: 0, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 13 }}>🔧</div>
+      <div style={{ width: 28, height: 28, borderRadius: "50%", background: "var(--red)", flexShrink: 0, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 13 }}><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg></div>
       <div style={{ background: "var(--bg-card)", border: "1px solid var(--border)", borderRadius: "16px 16px 16px 4px", padding: "10px 16px" }}>
         <div style={{ display: "flex", gap: 4, alignItems: "center" }}>
           {[0, 150, 300].map(d => (
@@ -76,15 +76,12 @@ function buildSteps(t) {
   const isPt = b.labels.brand === "Marca";
   return [
     { key: "service", type: "buttons", question: isPt ? "Olá! 👋 Que tipo de intervenção precisas?" : "Hello! 👋 What type of service do you need?", options: b.services },
-    { key: "brand",   type: "text",    question: isPt ? "Qual é a marca do teu carro?" : "What's your car brand?", placeholder: b.placeholders.brand },
-    { key: "model",   type: "text",    question: isPt ? "E o modelo?" : "And the model?", placeholder: b.placeholders.model },
-    { key: "year",    type: "text",    question: isPt ? "Ano de fabrico?" : "Year of manufacture?", placeholder: b.placeholders.year, inputMode: "numeric" },
-    { key: "plate",   type: "text",    question: isPt ? "Matrícula? (opcional — podes saltar)" : "Plate number? (optional — you can skip)", placeholder: b.placeholders.plate, optional: true },
+    { key: "model",   type: "text",    question: isPt ? "Qual é o modelo do teu carro?" : "What's your car model?", placeholder: b.placeholders.model },
+    { key: "plate",   type: "text",    question: isPt ? "Matrícula?" : "Plate number?", placeholder: b.placeholders.plate },
     { key: "date",    type: "date",    question: isPt ? "Quando preferes vir?" : "When would you like to come?" },
     { key: "time",    type: "buttons", question: isPt ? "A que horas?" : "What time?", options: TIME_SLOTS },
     { key: "name",    type: "text",    question: isPt ? "Qual é o teu nome?" : "What's your name?", placeholder: b.placeholders.name },
     { key: "phone",   type: "text",    question: isPt ? "Número de telefone?" : "Phone number?", placeholder: b.placeholders.phone, inputMode: "tel" },
-    { key: "email",   type: "text",    question: isPt ? "Email? (opcional — podes saltar)" : "Email? (optional — you can skip)", placeholder: b.placeholders.email, optional: true },
     { key: "notes",   type: "text",    question: isPt ? "Alguma nota adicional? (opcional)" : "Any additional notes? (optional)", placeholder: b.placeholders.notes, optional: true },
   ];
 }
@@ -233,7 +230,7 @@ function ChatWidget({ t, lang }) {
         }}>
           {/* Header */}
           <div style={{ padding: "16px 18px", borderBottom: "1px solid var(--border)", display: "flex", alignItems: "center", gap: 10, background: "var(--bg-card)" }}>
-            <div style={{ width: 36, height: 36, borderRadius: "50%", background: "var(--red)", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 18, flexShrink: 0 }}>🔧</div>
+            <div style={{ width: 36, height: 36, borderRadius: "50%", background: "var(--red)", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 18, flexShrink: 0 }}><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg></div>
             <div style={{ flex: 1 }}>
               <div style={{ fontFamily: "Saira Condensed", fontWeight: 700, fontSize: 15, color: "var(--text)", textTransform: "uppercase", letterSpacing: ".04em" }}>Marcola Garagem</div>
               <div style={{ fontSize: 11, color: "#22c55e", display: "flex", alignItems: "center", gap: 5, fontFamily: "Oswald", letterSpacing: ".08em" }}>
@@ -275,8 +272,9 @@ function ChatWidget({ t, lang }) {
                     type="date"
                     min={new Date().toISOString().split("T")[0]}
                     onChange={e => setInput(e.target.value)}
+                    onClick={e => { try { e.target.showPicker(); } catch (_) {} }}
                     className="chat-input"
-                    style={{ flex: 1, background: "var(--bg-elev)", border: "1px solid var(--border)", borderRadius: 10, padding: "10px 12px", color: "var(--text)", fontSize: 13, fontFamily: "Oswald", transition: "border-color .15s" }}
+                    style={{ flex: 1, background: "var(--bg-elev)", border: "1px solid var(--border)", borderRadius: 10, padding: "10px 12px", color: "var(--text)", fontSize: 13, fontFamily: "Oswald", transition: "border-color .15s", cursor: "pointer" }}
                   />
                   <button onClick={() => input && advanceStep(input)} className="chat-send"
                     style={{ background: "var(--red)", border: "none", color: "#fff", borderRadius: 10, padding: "0 16px", cursor: "pointer", fontSize: 18, transition: "background .15s" }}>

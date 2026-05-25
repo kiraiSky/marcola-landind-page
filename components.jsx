@@ -211,7 +211,7 @@ function Hero({ t }) {
 // ============================================================
 function Services({ t }) {
   return (
-    <section id="services" className="section-pad">
+    <section id="services" className="section-pad" style={{ background: "var(--bg-soft)" }}>
       <div className="container">
         <Reveal>
           <span className="eyebrow">{t.services.eyebrow}</span>
@@ -255,10 +255,10 @@ function Brands({ t }) {
           </h2>
           <p className="section-sub">{t.brands.sub}</p>
         </Reveal>
-        <div className="brands-strip">
-          <div className="brands-track">
-            {[...list, ...list].map((b, i) => <span key={i}>{b}</span>)}
-          </div>
+      </div>
+      <div className="brands-strip">
+        <div className="brands-track">
+          {[...list, ...list].map((b, i) => <span key={i}>{b}</span>)}
         </div>
       </div>
     </section>
@@ -322,7 +322,7 @@ function Gallery({ t }) {
   const pages = Math.ceil(photos.length / 2);
 
   return (
-    <section id="gallery" className="section-pad">
+    <section id="gallery" className="section-pad" style={{ background: "var(--bg-soft)" }}>
       <div className="container">
         <Reveal>
           <span className="eyebrow">{t.gallery.eyebrow}</span>
@@ -373,35 +373,113 @@ function Gallery({ t }) {
 // REVIEWS
 // ============================================================
 function Reviews({ t }) {
+  const list = t.reviews.list;
+  const N = list.length;
+  const items = useMemo(() => [...list, ...list, ...list], [list]);
+  // Start at N+1 so list[0] peeks on the left and list[1..3] are visible
+  const [idx, setIdx] = useState(N + 1);
+  const [noTransit, setNoTransit] = useState(false);
+  const [paused, setPaused] = useState(false);
+  const [cardW, setCardW] = useState(0);
+
+  useEffect(() => {
+    const update = () => {
+      const vw = window.innerWidth;
+      const side = Math.max(24, (vw - 1320) / 2 + 24);
+      setCardW(Math.floor((vw - 2 * side - 2 * 24) / 3));
+    };
+    update();
+    window.addEventListener("resize", update);
+    return () => window.removeEventListener("resize", update);
+  }, []);
+
+  // Infinite loop: when out of the safe band [N+1 .. N*2], jump ±N without transition
+  useEffect(() => {
+    if (idx >= N * 2 + 1 || idx <= N) {
+      const timer = setTimeout(() => {
+        setNoTransit(true);
+        setIdx(i => i >= N * 2 + 1 ? i - N : i + N);
+      }, 820);
+      return () => clearTimeout(timer);
+    }
+  }, [idx, N]);
+
+  useEffect(() => {
+    if (noTransit) {
+      const timer = setTimeout(() => setNoTransit(false), 50);
+      return () => clearTimeout(timer);
+    }
+  }, [noTransit]);
+
+  // Auto-advance
+  useEffect(() => {
+    if (paused) return;
+    const timer = setInterval(() => setIdx(i => i + 1), 10000);
+    return () => clearInterval(timer);
+  }, [paused]);
+
+  const prev = () => setIdx(i => i - 1);
+  const next = () => setIdx(i => i + 1);
+  const activeIdx = (idx - 1 + N * 10) % N;
+
   return (
-    <section id="reviews" className="section-pad" style={{ background: "var(--bg-soft)" }}>
+    <section id="reviews" className="section-pad" style={{ background: "var(--bg)" }}>
       <div className="container">
-        <Reveal>
-          <span className="eyebrow">{t.reviews.eyebrow}</span>
-          <h2 className="section-title"><span>{t.reviews.title1}</span> <span className="chrome">{t.reviews.title2}</span> <span className="outline">{t.reviews.title3}</span></h2>
+        <Reveal style={{ display: "flex", alignItems: "flex-end", justifyContent: "space-between", flexWrap: "wrap", gap: 24 }}>
+          <div>
+            <span className="eyebrow">{t.reviews.eyebrow}</span>
+            <h2 className="section-title" style={{ marginTop: 12 }}>
+              <span>{t.reviews.title1}</span> <span className="chrome">{t.reviews.title2}</span> <span className="outline">{t.reviews.title3}</span>
+            </h2>
+          </div>
+          <div className="gallery-arrows" style={{ marginBottom: 8 }}>
+            <button onClick={prev} aria-label="Anterior"><IconArrowL /></button>
+            <button onClick={next} aria-label="Próximo"><IconArrowR /></button>
+          </div>
         </Reveal>
-        <Reveal stagger className="reviews">
-          {t.reviews.list.map((r, i) => (
-            <div className="review" key={i}>
+      </div>
+
+      <div
+        style={{ overflow: "hidden", marginTop: 48 }}
+        onMouseEnter={() => setPaused(true)}
+        onMouseLeave={() => setPaused(false)}
+      >
+        <div style={{
+          display: "flex",
+          gap: 24,
+          paddingLeft: "max(24px, calc((100vw - 1320px) / 2 + 24px))",
+          transform: `translateX(-${idx * (cardW + 24)}px)`,
+          transition: noTransit ? "none" : "transform .8s cubic-bezier(.65,0,.35,1)",
+        }}>
+          {items.map((r, i) => (
+            <div key={i} className="review" style={{ flex: `0 0 ${cardW}px` }}>
               <div className="review-stars">{"★".repeat(r.stars)}</div>
               <p className="review-text">"{r.text}"</p>
               <div className="review-foot">
                 <span className="av">{r.initial}</span>
-                <div>
-                  <b>{r.name}</b>
-                  <span>{r.when}</span>
-                </div>
+                <div><b>{r.name}</b><span>{r.when}</span></div>
               </div>
             </div>
           ))}
-        </Reveal>
-        <Reveal className="reviews-summary">
-          <div className="score">4.9<span className="of">/5</span></div>
-          <div className="meta">
-            <b>{t.reviews.summary}</b>
-            <span>+ 180 {t.reviews.reviews}</span>
+        </div>
+      </div>
+
+      <div className="container">
+        <Reveal style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginTop: 32, flexWrap: "wrap", gap: 24 }}>
+          <div style={{ display: "flex", gap: 8 }}>
+            {list.map((_, i) => (
+              <button key={i} onClick={() => setIdx(N + 1 + i)}
+                style={{ width: i === activeIdx ? 32 : 10, height: 4, background: i === activeIdx ? "var(--red)" : "var(--border)", border: "none", cursor: "pointer", borderRadius: 2, transition: "width .3s, background .3s", padding: 0 }} />
+            ))}
           </div>
-          <a className="btn btn-ghost" href="https://www.google.com/search?q=Marcola+Garagem+Quarteira" target="_blank" rel="noreferrer">Google Reviews <IconArrowR /></a>
+          <div style={{ display: "flex", alignItems: "center", gap: 32, flexWrap: "wrap" }}>
+            <div style={{ display: "flex", alignItems: "baseline", gap: 8 }}>
+              <span style={{ fontFamily: "Saira Condensed", fontSize: 48, fontWeight: 800, lineHeight: 1 }}>4.9</span>
+              <span style={{ color: "var(--text-3)", fontFamily: "Saira Condensed", fontSize: 20 }}>/5</span>
+              <span style={{ fontFamily: "Oswald", fontSize: 11, color: "var(--text-3)", letterSpacing: ".15em", textTransform: "uppercase", marginLeft: 8 }}>+ 180 {t.reviews.reviews}</span>
+            </div>
+            <a className="btn btn-ghost" href="https://www.google.com/search?q=Marcola+Garagem+Quarteira" target="_blank" rel="noreferrer">Google Reviews <IconArrowR /></a>
+          </div>
         </Reveal>
       </div>
     </section>
@@ -447,7 +525,7 @@ function Contact({ t }) {
   }, []);
 
   return (
-    <section id="contact" className="section-pad">
+    <section id="contact" className="section-pad" style={{ paddingBottom: 0 }}>
       <div className="container">
         <Reveal>
           <span className="eyebrow">{t.contact.eyebrow}</span>
@@ -518,19 +596,19 @@ function Contact({ t }) {
             <iframe src={MAP_EMBED} loading="lazy" referrerPolicy="no-referrer-when-downgrade" title="Mapa Marcola Garagem"></iframe>
           </div>
         </Reveal>
-        <Reveal>
-          <div className="cta-strip">
-            <div>
-              <h3>{t.contact.cta.title}</h3>
-              <p>{t.contact.cta.body}</p>
-            </div>
-            <div className="cta-strip-actions">
-              <a className="btn btn-red" href="#booking">{t.contact.cta.primary} <IconArrow size={16} /></a>
-              <a className="btn btn-wa" href={WA_URL} target="_blank" rel="noreferrer"><IconWA />{t.contact.cta.wa}</a>
-            </div>
-          </div>
-        </Reveal>
       </div>
+      <Reveal>
+        <div className="cta-strip">
+          <div>
+            <h3>{t.contact.cta.title}</h3>
+            <p>{t.contact.cta.body}</p>
+          </div>
+          <div className="cta-strip-actions">
+            <a className="btn btn-red" href="#booking">{t.contact.cta.primary} <IconArrow size={16} /></a>
+            <a className="btn btn-wa" href={WA_URL} target="_blank" rel="noreferrer"><IconWA />{t.contact.cta.wa}</a>
+          </div>
+        </div>
+      </Reveal>
     </section>
   );
 }

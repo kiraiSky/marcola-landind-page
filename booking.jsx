@@ -20,7 +20,7 @@ function Booking({ t, lang }) {
 
   const canNext = () => {
     if (step === 0) return !!data.service;
-    if (step === 1) return data.brand && data.model && data.year;
+    if (step === 1) return data.model && data.plate;
     if (step === 2) return data.date && data.time;
     if (step === 3) return data.name && data.phone;
     return false;
@@ -40,7 +40,6 @@ function Booking({ t, lang }) {
   const validateStep4 = () => {
     const phoneClean = data.phone.replace(/\s/g, "");
     if (!/^\+?[0-9]{9,15}$/.test(phoneClean)) return "Número de telefone inválido.";
-    if (data.email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(data.email)) return "Email inválido.";
     if (data.name.length < 2) return "Nome demasiado curto.";
     return null;
   };
@@ -92,7 +91,7 @@ function Booking({ t, lang }) {
   const slots = ["09:00", "10:00", "11:00", "14:00", "15:30", "17:00"];
 
   return (
-    <section id="booking" className="section-pad">
+    <section id="booking" className="section-pad" style={{ background: "var(--bg-soft)" }}>
       <div className="container">
         <Reveal>
           <span className="eyebrow">{t.booking.eyebrow}</span>
@@ -173,18 +172,8 @@ function Booking({ t, lang }) {
                     <div className="step-title">{t.booking.s2.title}</div>
                     <div className="field-row">
                       <div className="field">
-                        <label>{t.booking.labels.brand}</label>
-                        <input value={data.brand} onChange={(e) => set("brand", e.target.value)} placeholder={t.booking.placeholders.brand} />
-                      </div>
-                      <div className="field">
                         <label>{t.booking.labels.model}</label>
                         <input value={data.model} onChange={(e) => set("model", e.target.value)} placeholder={t.booking.placeholders.model} />
-                      </div>
-                    </div>
-                    <div className="field-row">
-                      <div className="field">
-                        <label>{t.booking.labels.year}</label>
-                        <input value={data.year} onChange={(e) => set("year", e.target.value)} placeholder={t.booking.placeholders.year} inputMode="numeric" />
                       </div>
                       <div className="field">
                         <label>{t.booking.labels.plate}</label>
@@ -204,6 +193,8 @@ function Booking({ t, lang }) {
                         value={data.date}
                         min={new Date().toISOString().split("T")[0]}
                         onChange={(e) => set("date", e.target.value)}
+                        onClick={(e) => { try { e.target.showPicker(); } catch (_) {} }}
+                        style={{ cursor: "pointer" }}
                       />
                     </div>
                     <div className="field">
@@ -230,22 +221,16 @@ function Booking({ t, lang }) {
                     <div className="step-title">{t.booking.s4.title}</div>
                     <div className="summary">
                       <div className="summary-row"><span>{t.booking.sumService}</span><b>{data.service}</b></div>
-                      <div className="summary-row"><span>{t.booking.sumVehicle}</span><b>{data.brand} {data.model} ({data.year}){data.plate ? ` · ${data.plate}` : ""}</b></div>
+                      <div className="summary-row"><span>{t.booking.sumVehicle}</span><b>{data.model}{data.plate ? ` · ${data.plate}` : ""}</b></div>
                       <div className="summary-row"><span>{t.booking.sumDate}</span><b>{data.date} · {data.time}</b></div>
                     </div>
                     <div className="field">
                       <label>{t.booking.labels.name}</label>
                       <input value={data.name} onChange={(e) => set("name", e.target.value)} placeholder={t.booking.placeholders.name} />
                     </div>
-                    <div className="field-row">
-                      <div className="field">
-                        <label>{t.booking.labels.phone}</label>
-                        <input value={data.phone} onChange={(e) => set("phone", e.target.value)} placeholder={t.booking.placeholders.phone} inputMode="tel" />
-                      </div>
-                      <div className="field">
-                        <label>{t.booking.labels.email}</label>
-                        <input value={data.email} onChange={(e) => set("email", e.target.value)} placeholder={t.booking.placeholders.email} type="email" />
-                      </div>
+                    <div className="field">
+                      <label>{t.booking.labels.phone}</label>
+                      <input value={data.phone} onChange={(e) => set("phone", e.target.value)} placeholder={t.booking.placeholders.phone} inputMode="tel" />
                     </div>
                     <div className="field">
                       <label>{t.booking.labels.notes}</label>
