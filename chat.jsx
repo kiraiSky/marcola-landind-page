@@ -261,6 +261,14 @@ function ChatWidget({ t, lang }) {
             <div ref={bottomRef} />
           </div>
 
+          {/* Privacy notice (RGPD) */}
+          <div style={{ padding: "6px 14px", borderTop: "1px solid var(--border)", fontSize: 11, lineHeight: 1.4, color: "var(--text-3)", background: "var(--bg-soft)" }}>
+            {lang === "en" ? "Your details are only used to handle your booking. " : "Os teus dados servem apenas para tratar a marcação. "}
+            <a href={`privacidade.html${lang === "en" ? "?lang=en" : ""}`} target="_blank" rel="noopener" style={{ color: "var(--text-2)", textDecoration: "underline" }}>
+              {lang === "en" ? "Privacy policy" : "Política de privacidade"}
+            </a>
+          </div>
+
           {/* Input area */}
           {!done && !typing && started && (
             <div style={{ padding: "12px 14px", borderTop: "1px solid var(--border)", background: "var(--bg-card)" }}>
@@ -317,7 +325,7 @@ function ChatWidget({ t, lang }) {
                     />
                     <button onClick={handlePhone} className="chat-send"
                       style={{ background: "var(--red)", border: "none", color: "#fff", borderRadius: 10, padding: "0 14px", cursor: "pointer", fontSize: 18, transition: "background .15s" }}>
-                      â†’
+                      →
                     </button>
                   </div>
                   <div style={{ color: phoneError ? "var(--red)" : "var(--text-3)", fontSize: 11, lineHeight: 1.35 }}>

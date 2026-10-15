@@ -119,6 +119,7 @@ const I18N = {
       back: "Voltar",
       next: "Continuar",
       finish: "Confirmar marcação",
+      consent: ["Li e aceito a ", "Política de Privacidade", " e os ", "Termos e Condições", "."],
       s1: { eyebrow: "01 · Serviço", title: "Que tipo de intervenção?" },
       s2: { eyebrow: "02 · Veículo", title: "Sobre o teu carro" },
       s3: { eyebrow: "03 · Data", title: "Quando trazes?" },
@@ -211,15 +212,24 @@ const I18N = {
         { href: "#contact", label: "Morada, horário e contactos" },
       ],
       legal: "Informação legal",
-      legalLinks: ["Termos & condições", "Política de privacidade", "Livro de reclamações"],
+      legalLinks: [
+        { href: "termos.html", label: "Termos e condições" },
+        { href: "termos.html#livre-resolucao", label: "Direito de livre resolução" },
+        { href: "privacidade.html", label: "Política de privacidade" },
+      ],
       dpoLink: "Pedidos RGPD por email",
       dpoSubject: "Pedido RGPD — Marcola Garagem",
+      company: "Identificação",
+      companyLabels: { name: "Denominação", nif: "NIF/NIPC", address: "Sede e oficina", phone: "Telefone", email: "Email" },
+      capital: "Capital social",
+      ralTitle: "Resolução alternativa de litígios",
+      ralIntro: "Em caso de litígio de consumo, o consumidor pode recorrer a uma das seguintes entidades de resolução alternativa de litígios:",
+      ralMore: "Mais informações no Portal do Consumidor:",
       followUs: "Segue & contacta",
       waLink: "Falar via WhatsApp",
       googleLink: "Ver no Google Maps",
       callLink: "Ligar para a oficina",
-      copy: "© 2025 Marcola Garagem. Todos os direitos reservados.",
-      lic: "NIPC 510 000 000 · Lic. 0000",
+      copy: "Todos os direitos reservados.",
     },
   },
   en: {
@@ -341,6 +351,7 @@ const I18N = {
       back: "Back",
       next: "Continue",
       finish: "Confirm booking",
+      consent: ["I have read and accept the ", "Privacy Policy", " and the ", "Terms & Conditions", "."],
       s1: { eyebrow: "01 · Service", title: "What needs doing?" },
       s2: { eyebrow: "02 · Vehicle", title: "About your car" },
       s3: { eyebrow: "03 · Date", title: "When can you drop it off?" },
@@ -439,15 +450,24 @@ const I18N = {
         { href: "#contact", label: "Address, hours & contact" },
       ],
       legal: "Legal information",
-      legalLinks: ["Terms & conditions", "Privacy policy", "Complaints book (Livro de Reclamações)"],
+      legalLinks: [
+        { href: "termos.html?lang=en", label: "Terms & conditions" },
+        { href: "termos.html?lang=en#en-livre-resolucao", label: "Right of withdrawal" },
+        { href: "privacidade.html?lang=en", label: "Privacy policy" },
+      ],
       dpoLink: "GDPR requests by email",
       dpoSubject: "GDPR request — Marcola Garagem",
+      company: "Company details",
+      companyLabels: { name: "Company", nif: "VAT no. (NIF)", address: "Registered office & workshop", phone: "Phone", email: "Email" },
+      capital: "Share capital",
+      ralTitle: "Alternative dispute resolution",
+      ralIntro: "In the event of a consumer dispute, consumers may refer it to one of the following alternative dispute resolution bodies:",
+      ralMore: "More information at the Portuguese Consumer Portal:",
       followUs: "Follow & contact us",
       waLink: "Chat with us on WhatsApp",
       googleLink: "View us on Google Maps",
       callLink: "Call the workshop now",
-      copy: "© 2025 Marcola Garagem. All rights reserved.",
-      lic: "NIPC 510 000 000 · Lic. 0000",
+      copy: "All rights reserved.",
     },
   },
 };
@@ -460,4 +480,15 @@ const MAP_EMBED = "https://www.google.com/maps?q=Urbaniza%C3%A7%C3%A3o+Aldeia+Ve
 const MAP_LINK = "https://www.google.com/maps/search/?api=1&query=Urbaniza%C3%A7%C3%A3o+Aldeia+Velha+540A%2C+8125-018+Quarteira";
 const DIRECTIONS_URL = "https://www.google.com/maps/dir/?api=1&destination=Urbaniza%C3%A7%C3%A3o+Aldeia+Velha+540A%2C+8125-018+Quarteira";
 
-Object.assign(window, { I18N, PHONE_DISPLAY, PHONE_TEL, WA_URL, ADDRESS, MAP_EMBED, MAP_LINK, DIRECTIONS_URL });
+// Identificação legal (DL 7/2004 art. 10.º; CSC art. 171.º) — manter igual a termos.html / privacidade.html
+const COMPANY_NAME = "Realidade Visionária Unipessoal, Lda.";
+const COMPANY_NIF = "518 624 935";
+const COMPANY_EMAIL = "marcola.garagem@gmail.com";
+const COMPANY_CAPITAL = "5 000,00 €";
+const RAL_ENTITIES = [
+  { name: "CASA — Centro de Arbitragem do Setor Automóvel", url: "https://www.arbitragemauto.pt", label: "www.arbitragemauto.pt" },
+  { name: "CIMAAL — Centro de Informação, Mediação e Arbitragem de Consumo do Algarve", url: "https://www.consumidoronline.pt", label: "www.consumidoronline.pt", tel: "289 823 135" },
+];
+const CONSUMER_PORTAL = { url: "https://www.consumidor.gov.pt", label: "www.consumidor.gov.pt" };
+
+Object.assign(window, { I18N, PHONE_DISPLAY, PHONE_TEL, WA_URL, ADDRESS, MAP_EMBED, MAP_LINK, DIRECTIONS_URL, COMPANY_NAME, COMPANY_NIF, COMPANY_EMAIL, COMPANY_CAPITAL, RAL_ENTITIES, CONSUMER_PORTAL });

@@ -166,12 +166,12 @@
 
 <link rel="icon" type="image/png" href="assets/logo.png" />
 
-<link rel="preconnect" href="https://fonts.googleapis.com" />
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link href="https://fonts.googleapis.com/css2?family=Saira+Condensed:wght@500;600;700;800;900&family=Manrope:wght@300;400;500;600;700&family=Oswald:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<!-- Fontes e React alojados localmente: nenhum pedido a terceiros ao abrir o site (RGPD) -->
+<link rel="preload" href="assets/fonts/manrope-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin />
+<link href="assets/fonts/fonts.css" rel="stylesheet" />
 
-<script crossorigin src="https://unpkg.com/react@18.3.1/umd/react.production.min.js"></script>
-<script crossorigin src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.production.min.js"></script>
+<script src="assets/vendor/react.production.min.js"></script>
+<script src="assets/vendor/react-dom.production.min.js"></script>
 
 <style>
   :root {
@@ -982,6 +982,10 @@
     line-height: 1.35;
   }
   .field-hint.ok { color: #22c55e; }
+  .consent-check { display: flex; gap: 10px; align-items: flex-start; margin-top: 6px; font-size: 13px; line-height: 1.5; color: var(--text-2); cursor: pointer; }
+  .consent-check input { width: 18px; height: 18px; margin: 1px 0 0; flex-shrink: 0; accent-color: var(--red); cursor: pointer; }
+  .consent-check a { color: var(--text); text-decoration: underline; text-underline-offset: 3px; }
+  .consent-check a:hover { color: var(--red); }
 
   .step-nav { display: flex; justify-content: space-between; margin-top: 32px; align-items: center; }
   .step-nav .back { background: none; border: none; color: var(--text-2); cursor: pointer; font-family: inherit; font-size: 14px; padding: 8px 0; }
@@ -1130,7 +1134,31 @@
   .foot-col h5 { font-family: "Oswald"; font-size: 11px; letter-spacing: .2em; color: var(--text-3); text-transform: uppercase; margin: 0 0 18px; }
   .foot-col a { display: block; color: var(--text-2); text-decoration: none; padding: 6px 0; font-size: 14px; }
   .foot-col a:hover { color: var(--red); }
-  .foot-col .foot-legal { display: block; color: var(--text-3); padding: 6px 0; font-size: 14px; }
+  .foot-col .foot-lr {
+    display: inline-flex; align-items: center; gap: 10px; margin-top: 14px; padding: 8px 14px 8px 8px;
+    border: 1px solid var(--border-strong); border-radius: 10px; background: var(--bg-card);
+    color: var(--text); font-size: 12px; line-height: 1.2; font-weight: 600;
+  }
+  .foot-col .foot-lr:hover { border-color: var(--red); color: var(--text); }
+  .foot-lr-icon {
+    display: grid; place-items: center; width: 32px; height: 32px; border-radius: 7px;
+    background: var(--red); color: #fff; font-family: "Oswald"; font-size: 13px; letter-spacing: .04em;
+  }
+  .foot-legal-grid {
+    display: grid; grid-template-columns: 1fr 1.2fr; gap: 48px;
+    margin-top: 56px; padding-top: 36px; border-top: 1px solid var(--border);
+    font-size: 13px; color: var(--text-2); line-height: 1.55;
+  }
+  .foot-legal-grid h5 { font-family: "Oswald"; font-size: 11px; letter-spacing: .2em; color: var(--text-3); text-transform: uppercase; margin: 0 0 14px; }
+  .foot-legal-grid a { color: var(--text); text-decoration: underline; text-decoration-color: var(--border-strong); text-underline-offset: 3px; }
+  .foot-legal-grid a:hover { color: var(--red); text-decoration-color: var(--red); }
+  .foot-company dl { display: grid; grid-template-columns: max-content 1fr; gap: 6px 18px; margin: 0; }
+  .foot-company dt { color: var(--text-3); }
+  .foot-company dd { margin: 0; color: var(--text); }
+  .foot-ral p { margin: 0 0 12px; }
+  .foot-ral ul { list-style: none; padding: 0; margin: 0 0 12px; display: grid; gap: 10px; }
+  .foot-ral li { display: grid; gap: 2px; }
+  .foot-ral li b { color: var(--text); font-weight: 600; }
   .foot-bottom {
     margin-top: 60px;
     padding-top: 24px;
@@ -1356,6 +1384,9 @@
     .faq-q .plus { width: 22px; height: 22px; }
 
     .foot-grid { grid-template-columns: 1fr; gap: 28px; }
+    .foot-legal-grid { grid-template-columns: 1fr; gap: 28px; margin-top: 36px; padding-top: 28px; }
+    .foot-company dl { grid-template-columns: 1fr; gap: 2px 0; }
+    .foot-company dd { margin-bottom: 8px; }
     .foot-bottom { flex-direction: column; gap: 8px; text-align: center; padding-top: 18px; }
     .foot-brand img { height: 48px; }
     footer { padding: 56px 0 24px; }
@@ -1533,7 +1564,9 @@
   </main>
 
   <footer>
-    <p>© 2025 Marcola Garagem. Oficina mecânica em Quarteira, Algarve. NIPC 510 000 000.</p>
+    <p>Marcola Garagem — Realidade Visionária Unipessoal, Lda. · NIF 518 624 935 · Capital social 5 000,00 € · Urbanização Aldeia Velha 540A, 8125-018 Quarteira · +351 935 208 176 · marcola.garagem@gmail.com</p>
+    <p><a href="termos.html">Termos e condições</a> · <a href="privacidade.html">Política de privacidade</a> · <a href="https://www.livroreclamacoes.pt/">Livro de Reclamações</a></p>
+    <p>Resolução alternativa de litígios: CASA — Centro de Arbitragem do Setor Automóvel (www.arbitragemauto.pt); CIMAAL — Centro de Informação, Mediação e Arbitragem de Consumo do Algarve (www.consumidoronline.pt, 289 823 135). Mais informações: www.consumidor.gov.pt</p>
   </footer>
 </div>
 
@@ -1542,10 +1575,10 @@
   <p style="background:#e10600;color:#fff;padding:12px 24px;margin:0;text-align:center;font-family:system-ui,sans-serif">Este site funciona melhor com JavaScript ativo. Ativa o JavaScript para a experiência completa.</p>
 </noscript>
 
-<script defer src="dist/i18n.js?v=20260525-flag"></script>
-<script defer src="dist/components.js?v=20260525-flag"></script>
-<script defer src="dist/booking.js?v=20260525-flag"></script>
-<script defer src="dist/chat.js?v=20260525-flag"></script>
-<script defer src="dist/app.js?v=20260525-flag"></script>
+<script defer src="dist/i18n.js?v=20261015-legal"></script>
+<script defer src="dist/components.js?v=20261015-legal"></script>
+<script defer src="dist/booking.js?v=20261015-legal"></script>
+<script defer src="dist/chat.js?v=20261015-legal"></script>
+<script defer src="dist/app.js?v=20261015-legal"></script>
 </body>
 </html>

@@ -661,8 +661,12 @@ function Footer({ t }) {
           </div>
           <div className="foot-col">
             <h5>{t.footer.legal}</h5>
-            {t.footer.legalLinks.map((l, i) => <span key={i} className="foot-legal">{l}</span>)}
-            <a href={`mailto:geral@marcolagaragem.pt?subject=${encodeURIComponent(t.footer.dpoSubject)}`}>{t.footer.dpoLink}</a>
+            {t.footer.legalLinks.map((l, i) => <a key={i} href={l.href}>{l.label}</a>)}
+            <a href={`mailto:${COMPANY_EMAIL}?subject=${encodeURIComponent(t.footer.dpoSubject)}`}>{t.footer.dpoLink}</a>
+            <a className="foot-lr" href="https://www.livroreclamacoes.pt/" target="_blank" rel="noopener noreferrer">
+              <span className="foot-lr-icon" aria-hidden="true">LR</span>
+              <span>Livro de<br />Reclamações</span>
+            </a>
           </div>
           <div className="foot-col">
             <h5>{t.footer.followUs}</h5>
@@ -671,9 +675,38 @@ function Footer({ t }) {
             <a href={`tel:${PHONE_TEL}`}>{t.footer.callLink}</a>
           </div>
         </div>
+        <div className="foot-legal-grid">
+          <div className="foot-company">
+            <h5>{t.footer.company}</h5>
+            <dl>
+              <dt>{t.footer.companyLabels.name}</dt><dd>{COMPANY_NAME}</dd>
+              <dt>{t.footer.companyLabels.nif}</dt><dd>{COMPANY_NIF}</dd>
+              {COMPANY_CAPITAL && <><dt>{t.footer.capital}</dt><dd>{COMPANY_CAPITAL}</dd></>}
+              <dt>{t.footer.companyLabels.address}</dt><dd>{ADDRESS}</dd>
+              <dt>{t.footer.companyLabels.phone}</dt><dd><a href={`tel:${PHONE_TEL}`}>{PHONE_DISPLAY}</a></dd>
+              <dt>{t.footer.companyLabels.email}</dt><dd><a href={`mailto:${COMPANY_EMAIL}`}>{COMPANY_EMAIL}</a></dd>
+            </dl>
+          </div>
+          <div className="foot-ral">
+            <h5>{t.footer.ralTitle}</h5>
+            <p>{t.footer.ralIntro}</p>
+            <ul>
+              {RAL_ENTITIES.map((e) => (
+                <li key={e.url}>
+                  <b>{e.name}</b>
+                  <span>
+                    <a href={e.url} target="_blank" rel="noopener noreferrer">{e.label}</a>
+                    {e.tel && <> · <a href={`tel:+351${e.tel.replace(/\s/g, "")}`}>{e.tel}</a></>}
+                  </span>
+                </li>
+              ))}
+            </ul>
+            <p>{t.footer.ralMore} <a href={CONSUMER_PORTAL.url} target="_blank" rel="noopener noreferrer">{CONSUMER_PORTAL.label}</a></p>
+          </div>
+        </div>
         <div className="foot-bottom">
+          <span>© {new Date().getFullYear()} Marcola Garagem · {COMPANY_NAME}</span>
           <span>{t.footer.copy}</span>
-          <span>{t.footer.lic}</span>
         </div>
       </div>
     </footer>

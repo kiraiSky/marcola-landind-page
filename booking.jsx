@@ -128,6 +128,7 @@ function Booking({ t, lang }) {
   const [loading, setLoading] = useStateBk(false);
   const [error, setError] = useStateBk(null);
   const [lastSubmit, setLastSubmit] = useStateBk(0);
+  const [consent, setConsent] = useStateBk(false);
   const [ref] = useStateBk(() => "MG-" + Math.floor(Math.random() * 90000 + 10000));
 
   const total = 4;
@@ -137,7 +138,7 @@ function Booking({ t, lang }) {
     if (step === 0) return !!data.service;
     if (step === 1) return data.model && data.plate;
     if (step === 2) return data.date && data.time;
-    if (step === 3) return data.name && normalizePhone(data.phone, data.phoneCountry).valid;
+    if (step === 3) return data.name && normalizePhone(data.phone, data.phoneCountry).valid && consent;
     return false;
   };
 
@@ -181,6 +182,7 @@ function Booking({ t, lang }) {
           email: sanitize(data.email),
           notes: sanitize(data.notes),
           lang: lang || "pt",
+          privacyConsent: true,
           submittedAt: new Date().toISOString(),
         }),
       });
@@ -195,6 +197,7 @@ function Booking({ t, lang }) {
   const reset = () => {
     setDone(false);
     setStep(0);
+    setConsent(false);
     setData({ service: "", brand: "", model: "", year: "", plate: "", date: "", time: "", name: "", phone: "", phoneCountry: "PT", email: "", notes: "" });
   };
 
@@ -370,6 +373,16 @@ function Booking({ t, lang }) {
                       <label>{t.booking.labels.notes}</label>
                       <textarea value={data.notes} onChange={(e) => set("notes", e.target.value)} placeholder={t.booking.placeholders.notes} rows={3}></textarea>
                     </div>
+                    <label className="consent-check">
+                      <input type="checkbox" checked={consent} onChange={(e) => setConsent(e.target.checked)} />
+                      <span>
+                        {t.booking.consent[0]}
+                        <a href={`privacidade.html${lang === "en" ? "?lang=en" : ""}`} target="_blank" rel="noopener">{t.booking.consent[1]}</a>
+                        {t.booking.consent[2]}
+                        <a href={`termos.html${lang === "en" ? "?lang=en" : ""}`} target="_blank" rel="noopener">{t.booking.consent[3]}</a>
+                        {t.booking.consent[4]}
+                      </span>
+                    </label>
                   </>
                 )}
 
