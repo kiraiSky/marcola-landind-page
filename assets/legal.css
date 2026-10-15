@@ -19,7 +19,7 @@ body { background: var(--bg); color: var(--text); font-family: "Manrope", system
 .legal-top { position: sticky; top: 0; z-index: 10; background: var(--bg-soft); border-bottom: 1px solid var(--border); }
 .legal-top .wrap { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding-top: 12px; padding-bottom: 12px; }
 .legal-brand { display: flex; align-items: center; gap: 10px; color: var(--text); text-decoration: none; font-family: "Saira Condensed"; font-weight: 800; font-size: 20px; text-transform: uppercase; letter-spacing: .02em; }
-.legal-brand img { width: 36px; height: 36px; }
+.legal-brand img { height: 40px; width: auto; display: block; }
 .legal-lang { display: flex; gap: 4px; }
 .legal-lang button { background: none; border: 1px solid var(--border); color: var(--text-2); border-radius: 8px; padding: 6px 10px; font-family: "Oswald"; font-size: 12px; letter-spacing: .1em; cursor: pointer; }
 .legal-lang button[aria-pressed="true"] { background: var(--red); border-color: var(--red); color: #fff; }

@@ -78,11 +78,7 @@ function Nav({ t, lang, setLang, theme, setTheme }) {
       <header className={`topbar${open ? " topbar-drawer-open" : ""}`}>
         <div className="container-wide nav">
           <a href="#top" className="brand">
-            <img src="assets/logo.png" alt="Marcola Garagem — car mechanic and workshop in Quarteira, Algarve" width="44" height="44" />
-            <div className="brand-meta">
-              <b>MARCOLA</b>
-              <small>Garagem · Quarteira</small>
-            </div>
+            <img src="assets/logo-marcola-garage.webp" alt="Marcola Garage — oficina mecânica em Quarteira, Algarve" width="1000" height="260" />
           </a>
           <nav className="nav-links">
             {links.map(l => <a key={l.href} href={l.href}>{l.label}</a>)}
@@ -650,7 +646,7 @@ function Footer({ t }) {
       <div className="container">
         <div className="foot-grid">
           <div className="foot-brand">
-            <img src="assets/logo.png" alt="Marcola Garagem — car workshop logo" width="56" height="56" />
+            <img src="assets/logo-marcola-garage.webp" alt="Marcola Garage" width="1000" height="260" loading="lazy" />
             <p>{t.footer.tag}</p>
           </div>
           <div className="foot-col">
